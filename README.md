@@ -1,29 +1,16 @@
 # README #
-
-This README would normally document whatever steps are necessary to get your application up and running.
+Welcome to TreeServerManager
 
 ### What is this repository for? ###
+TreeServerManager is the Server-Side of the Tree Project, a Smart Home program looking to enhance your home, without any limits.
 
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
+Current Version: 0.01
 
 ### How do I get set up? ###
-
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
+Currently there's no working releases.
 
 ### Contribution guidelines ###
-
-* Writing tests
-* Code review
-* Other guidelines
+Looking for code reviewers
 
 ### Who do I talk to? ###
-
-* Repo owner or admin
-* Other community or team contact
+-tatanpoker09
