@@ -16,4 +16,12 @@ public class CommandManager {
 	public void postSetup() {
 		
 	}
+
+	public List<Command> getCommands() {
+		return commands;
+	}
+
+	public void addCommand(Command command) {
+		this.commands.add(command);
+	}
 }

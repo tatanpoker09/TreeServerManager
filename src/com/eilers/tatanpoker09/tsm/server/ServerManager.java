@@ -13,6 +13,7 @@ import com.eilers.tatanpoker09.tsm.commandmanagement.CommandManager;
 public class ServerManager extends Thread{
 	private String serverName;
 	private int maximumConnections;
+	private boolean running;
 	
 	
 	private CommandManager cManager;
@@ -20,6 +21,7 @@ public class ServerManager extends Thread{
 	public ServerManager(String serverName, int maximumConnections) {
 		this.serverName = serverName;
 		this.maximumConnections = maximumConnections;
+		this.running = true;
 	}
 	
 	public void setup() {
@@ -33,10 +35,15 @@ public class ServerManager extends Thread{
 		
 	}
 	
+	/**
+	 * Opens the connection to the server, allowing Clients to Join.
+	 * @param port
+	 * @throws IOException
+	 */
 	public void openConnection(int port) throws IOException {
 		Logger log = TreeServerManager.getLog();
 		ServerSocket serverSocket = new ServerSocket(port);
-		while(true) {
+		while(running) {
 			Socket clientSocket;
 			try {
 				clientSocket = serverSocket.accept();
@@ -45,5 +52,7 @@ public class ServerManager extends Thread{
 				log.severe("Client had an error connecting to the server: "+e.getStackTrace());
 			}
 		}
+		serverSocket.close();
+		log.info("Closing server!");
 	}
 }
