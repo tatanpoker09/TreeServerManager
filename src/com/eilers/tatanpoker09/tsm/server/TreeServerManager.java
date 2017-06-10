@@ -22,6 +22,10 @@ public class TreeServerManager {
 	private static final int MAXIMUM_CONNECTIONS = 5;
 	private static Logger log;
 	
+	/**
+	 * Start of the program, loads up the logger, starts the server with a name and max connections and loads up the server setup.
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		loadLogger();
 		ServerManager serverManager = new ServerManager(PROGRAM_NAME, MAXIMUM_CONNECTIONS);

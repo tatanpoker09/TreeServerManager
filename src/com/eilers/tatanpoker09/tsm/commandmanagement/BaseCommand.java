@@ -1,6 +1,11 @@
 package com.eilers.tatanpoker09.tsm.commandmanagement;
 
+import java.net.InetAddress;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
+
+import com.eilers.tatanpoker09.tsm.server.TreeServerManager;
 
 /**
  * Represents a command. Cannot be instantiated as it doesn't represent any specific command. Commands must extend this class.
@@ -13,18 +18,55 @@ import java.util.List;
  *
  */
 public abstract class BaseCommand implements Command{
+	/**
+	 * A list containing all loaded subCommands. Specified during command setup.
+	 */
 	private List<SubCommand> subCommands;
 	private String name;
 	
+	/**
+	 * Constructor, creates a Command with a specified name.
+	 * @param name - The command name.
+	 */
 	public BaseCommand(String name) {
 		this.name = name;
 	}
 	
+	/**
+	 * Command used to setup subcommands.
+	 */
+	public abstract void setup();
 	
+	/**
+	 * Adds a subcommand to the collection.
+	 * @param sCommand - The Subcommand.
+	 */
+	public void addSubCommand(SubCommand sCommand) {
+		Logger log = TreeServerManager.getLog();
+		if(subCommands==null) {
+			log.warning("Subcommand collection didn't exist, creating one now.");
+			subCommands = new ArrayList<SubCommand>();
+		}
+		log.info("Adding to: "+this.getName()+" the subcommand: "+sCommand.getName());
+		subCommands.add(sCommand);
+	}
 	
-	
+	/**
+	 * Function that gets triggered after a client connection calls the command.
+	 */
 	@Override
 	public abstract void onTrigger(String[] args);
+	
+	
+	/**
+	 * Function to call when the command gets triggered from somewhere else, mainly a step for logging.
+	 */
+	@Override
+	public void call(String[] args, InetAddress ip) {
+		Logger log = TreeServerManager.getLog();
+		log.info("Command: "+name+" called by: "+ip.toString());
+		onTrigger(args);
+	}
 
 
 

@@ -14,5 +14,13 @@ public class LightsCommand extends BaseCommand {
 	public void onTrigger(String[] args) {
 		
 	}
+
+	/**
+	 * Used to load subcommands.
+	 */
+	@Override
+	public void setup() {
+		
+	}
 	
 }

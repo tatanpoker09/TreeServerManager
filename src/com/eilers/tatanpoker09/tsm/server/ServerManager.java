@@ -24,13 +24,21 @@ public class ServerManager extends Thread{
 		this.running = true;
 	}
 	
+	/**
+	 * Loads all managers
+	 */
 	public void setup() {
+		Logger log = TreeServerManager.getLog();
+		log.info("Setting up server: "+serverName);
 		CommandManager cManager = new CommandManager();
 		cManager.setup();
 		cManager.postSetup();
 		postSetup();
 	}
 	
+	/**
+	 * Any post loading configurations are handled here.
+	 */
 	private void postSetup() {
 		
 	}
@@ -54,5 +62,25 @@ public class ServerManager extends Thread{
 		}
 		serverSocket.close();
 		log.info("Closing server!");
+	}
+
+	public int getMaximumConnections() {
+		return maximumConnections;
+	}
+
+	public String getServerName() {
+		return serverName;
+	}
+
+	public void setServerName(String serverName) {
+		this.serverName = serverName;
+	}
+
+	public CommandManager getcManager() {
+		return cManager;
+	}
+
+	public void setcManager(CommandManager cManager) {
+		this.cManager = cManager;
 	}
 }
