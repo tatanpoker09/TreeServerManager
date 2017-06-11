@@ -15,7 +15,6 @@ public class ServerManager extends Thread{
 	private int maximumConnections;
 	private boolean running;
 	
-	
 	private CommandManager cManager;
 	
 	public ServerManager(String serverName, int maximumConnections) {
@@ -28,7 +27,7 @@ public class ServerManager extends Thread{
 	 * Loads all managers
 	 */
 	public void setup() {
-		Logger log = TreeServerManager.getLog();
+		Logger log = Tree.getLog();
 		log.info("Setting up server: "+serverName);
 		CommandManager cManager = new CommandManager();
 		cManager.setup();
@@ -49,7 +48,7 @@ public class ServerManager extends Thread{
 	 * @throws IOException
 	 */
 	public void openConnection(int port) throws IOException {
-		Logger log = TreeServerManager.getLog();
+		Logger log = Tree.getLog();
 		ServerSocket serverSocket = new ServerSocket(port);
 		while(running) {
 			Socket clientSocket;

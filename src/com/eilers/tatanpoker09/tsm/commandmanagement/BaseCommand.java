@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-import com.eilers.tatanpoker09.tsm.server.TreeServerManager;
+import com.eilers.tatanpoker09.tsm.server.Tree;
 
 /**
  * Represents a command. Cannot be instantiated as it doesn't represent any specific command. Commands must extend this class.
@@ -30,6 +30,7 @@ public abstract class BaseCommand implements Command{
 	 */
 	public BaseCommand(String name) {
 		this.name = name;
+		setup();
 	}
 	
 	/**
@@ -42,7 +43,7 @@ public abstract class BaseCommand implements Command{
 	 * @param sCommand - The Subcommand.
 	 */
 	public void addSubCommand(SubCommand sCommand) {
-		Logger log = TreeServerManager.getLog();
+		Logger log = Tree.getLog();
 		if(subCommands==null) {
 			log.warning("Subcommand collection didn't exist, creating one now.");
 			subCommands = new ArrayList<SubCommand>();
@@ -63,7 +64,7 @@ public abstract class BaseCommand implements Command{
 	 */
 	@Override
 	public void call(String[] args, InetAddress ip) {
-		Logger log = TreeServerManager.getLog();
+		Logger log = Tree.getLog();
 		log.info("Command: "+name+" called by: "+ip.toString());
 		onTrigger(args);
 	}

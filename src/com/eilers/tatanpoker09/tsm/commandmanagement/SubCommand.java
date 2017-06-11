@@ -3,7 +3,7 @@ package com.eilers.tatanpoker09.tsm.commandmanagement;
 import java.net.InetAddress;
 import java.util.logging.Logger;
 
-import com.eilers.tatanpoker09.tsm.server.TreeServerManager;
+import com.eilers.tatanpoker09.tsm.server.Tree;
 
 /**
  * Represents a subcommand. As the name states, it is a section of a BaseCommand.
@@ -41,7 +41,7 @@ public class SubCommand implements Command{
 	 */
 	@Override
 	public void call(String[] args, InetAddress ip) {
-		Logger log = TreeServerManager.getLog();
+		Logger log = Tree.getLog();
 		log.info("Subcommand: "+name+" called by: "+ip.toString());
 		onTrigger(args);
 	}

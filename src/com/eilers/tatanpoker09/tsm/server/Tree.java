@@ -9,6 +9,9 @@ import java.util.logging.Logger;
  * .- Finish Server Manager
  * .- Start Voice Manager
  * .- Start Bluetooth Manager
+ * .- Start Peripheral Manager
+ * .- Load up all managers.
+ * .- Boot from Raspberry PI.
  * .- Start and Finish LightsCommand
  * .- Get a First Version done with Lights Working. For this no full Client side will be needed, just a way to simulate it.
   */
@@ -17,9 +20,12 @@ import java.util.logging.Logger;
  * @author tatanpoker09
  *
  */
-public class TreeServerManager {
+public class Tree {
 	private static final String PROGRAM_NAME = "Tree Server Manager";
 	private static final int MAXIMUM_CONNECTIONS = 5;
+	
+	private static ServerManager server;
+	
 	private static Logger log;
 	
 	/**
@@ -31,15 +37,20 @@ public class TreeServerManager {
 		ServerManager serverManager = new ServerManager(PROGRAM_NAME, MAXIMUM_CONNECTIONS);
 		getLog().info("Server Started.");
 		serverManager.setup();
+		Tree.server = serverManager;
 	}
 
 	private static void loadLogger() {
 		Logger log = Logger.getLogger(PROGRAM_NAME);
 		log.info("Logger Loaded.");
-		TreeServerManager.log = log;
+		Tree.log = log;
 	}
 
 	public static Logger getLog() {
 		return log;
+	}
+	
+	public static ServerManager getServer() {
+		return server;
 	}
 }
