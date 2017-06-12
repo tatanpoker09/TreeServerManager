@@ -19,7 +19,6 @@ public class SubCommand implements Command{
 		this.name = name;
 	}
 
-	@Override
 	public void onTrigger(String[] args) {
 		
 	}
@@ -39,7 +38,6 @@ public class SubCommand implements Command{
 	/**
 	 * Method used to call the subcommand with a specified configuration.
 	 */
-	@Override
 	public void call(String[] args, InetAddress ip) {
 		Logger log = Tree.getLog();
 		log.info("Subcommand: "+name+" called by: "+ip.toString());

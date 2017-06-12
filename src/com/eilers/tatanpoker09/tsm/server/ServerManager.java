@@ -6,6 +6,7 @@ import java.net.Socket;
 import java.util.logging.Logger;
 
 import com.eilers.tatanpoker09.tsm.commandmanagement.CommandManager;
+import com.eilers.tatanpoker09.tsm.voice.VoiceManager;
 
 /**
  * Handles server connections and setup. Pretty much this is the server itself.
@@ -32,6 +33,11 @@ public class ServerManager extends Thread{
 		CommandManager cManager = new CommandManager();
 		cManager.setup();
 		cManager.postSetup();
+		
+		VoiceManager vManager = new VoiceManager();
+		vManager.recognize();
+		
+		
 		postSetup();
 	}
 	

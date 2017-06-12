@@ -14,7 +14,7 @@ public interface Command {
 	 * Command containing the command's actions.
 	 * @param args - the extra configurations the command should have.
 	 */
-	abstract void onTrigger(String[] args);
+	public abstract void onTrigger(String[] args);
 	
 	/**
 	 * Function used to call the command from a specific address. 

@@ -1,11 +1,12 @@
 package com.eilers.tatanpoker09.tsm.commandmanagement;
 
-import java.net.InetAddress;
+import java.net.InetAddress; 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
 import com.eilers.tatanpoker09.tsm.server.Tree;
+import com.eilers.tatanpoker09.tsm.commandmanagement.Command;
 
 /**
  * Represents a command. Cannot be instantiated as it doesn't represent any specific command. Commands must extend this class.
@@ -55,18 +56,13 @@ public abstract class BaseCommand implements Command{
 	/**
 	 * Function that gets triggered after a client connection calls the command.
 	 */
-	@Override
 	public abstract void onTrigger(String[] args);
-	
 	
 	/**
 	 * Function to call when the command gets triggered from somewhere else, mainly a step for logging.
 	 */
-	@Override
 	public void call(String[] args, InetAddress ip) {
-		Logger log = Tree.getLog();
-		log.info("Command: "+name+" called by: "+ip.toString());
-		onTrigger(args);
+		
 	}
 
 

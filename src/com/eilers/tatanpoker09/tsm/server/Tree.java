@@ -40,6 +40,9 @@ public class Tree {
 		Tree.server = serverManager;
 	}
 
+	/**
+	 * Starts up the logging and sets it to a global variable.
+	 */
 	private static void loadLogger() {
 		Logger log = Logger.getLogger(PROGRAM_NAME);
 		log.info("Logger Loaded.");
