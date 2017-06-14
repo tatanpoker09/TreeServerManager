@@ -6,6 +6,7 @@ import java.net.Socket;
 import java.util.logging.Logger;
 
 import com.eilers.tatanpoker09.tsm.commandmanagement.CommandManager;
+import com.eilers.tatanpoker09.tsm.peripherals.BluetoothManager;
 import com.eilers.tatanpoker09.tsm.voice.VoiceManager;
 
 /**
@@ -17,6 +18,7 @@ public class ServerManager extends Thread{
 	private boolean running;
 	
 	private CommandManager cManager;
+	private BluetoothManager bManager;
 	
 	public ServerManager(String serverName, int maximumConnections) {
 		this.serverName = serverName;
@@ -37,7 +39,10 @@ public class ServerManager extends Thread{
 		VoiceManager vManager = new VoiceManager();
 		vManager.recognize();
 		
-		
+		BluetoothManager bManager = new BluetoothManager();
+		bManager.setup();
+		bManager.discoverDevices();
+
 		postSetup();
 	}
 	

@@ -5,11 +5,24 @@
   <version>0.0.1-SNAPSHOT</version>
   <name>Tree Server Manager</name>
   <dependencies>
-  	<dependency>
-    	<groupId>com.google.cloud</groupId>
-    	<artifactId>google-cloud-speech</artifactId>
-    	<version>0.17.1-alpha</version>
-	</dependency>
+      <dependency>
+          <groupId>net.sf.bluecove</groupId>
+          <artifactId>bluecove</artifactId>
+          <version>2.1.0</version>
+      </dependency>
+      <!-- Used for linux -->
+      <dependency>
+          <groupId>net.sf.bluecove</groupId>
+          <artifactId>bluecove-gpl</artifactId>
+          <version>2.1.0</version>
+          <scope>runtime</scope>
+      </dependency>
+      <dependency>
+          <groupId>net.sf.bluecove</groupId>
+          <artifactId>bluecove-emu</artifactId>
+          <version>2.1.0</version>
+          <scope>test</scope>
+      </dependency>
 </dependencies>
   <build>
     <sourceDirectory>src</sourceDirectory>
