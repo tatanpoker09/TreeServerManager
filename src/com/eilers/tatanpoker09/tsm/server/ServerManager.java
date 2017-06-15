@@ -5,21 +5,25 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.logging.Logger;
 
+import com.eilers.tatanpoker09.tsm.LightSection;
 import com.eilers.tatanpoker09.tsm.commandmanagement.CommandManager;
 import com.eilers.tatanpoker09.tsm.peripherals.BluetoothManager;
+import com.eilers.tatanpoker09.tsm.peripherals.Peripheral;
+import com.eilers.tatanpoker09.tsm.peripherals.PeripheralManager;
 import com.eilers.tatanpoker09.tsm.voice.VoiceManager;
 
 /**
  * Handles server connections and setup. Pretty much this is the server itself.
  */
-public class ServerManager extends Thread{
+public class ServerManager{
 	private String serverName;
 	private int maximumConnections;
 	private boolean running;
 	
 	private CommandManager cManager;
 	private BluetoothManager bManager;
-	
+	private PeripheralManager pManager;
+
 	public ServerManager(String serverName, int maximumConnections) {
 		this.serverName = serverName;
 		this.maximumConnections = maximumConnections;
@@ -39,18 +43,31 @@ public class ServerManager extends Thread{
 		VoiceManager vManager = new VoiceManager();
 		vManager.recognize();
 		
-		BluetoothManager bManager = new BluetoothManager();
+		BluetoothManager bManager = new BluetoothManager(this);
 		bManager.setup();
 		bManager.discoverDevices();
 
+		pManager = new PeripheralManager();
+		pManager.setup();
 		postSetup();
+
 	}
 	
 	/**
 	 * Any post loading configurations are handled here.
 	 */
 	private void postSetup() {
-		
+		Peripheral lights = new Peripheral("LIGHTS");
+		System.out.print("Found Devices:");
+		System.out.println(bManager.getFoundDevices());
+		lights.registerBtDevice(bManager.getFoundDevices().get(0));
+		try {
+			lights.getBtDevice().authenticate();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		pManager.addPeripheral(lights);
+		LightSection ls = new LightSection("",lights);
 	}
 	
 	/**

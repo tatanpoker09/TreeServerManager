@@ -11,6 +11,10 @@ public class Peripheral {
         this.type = type;
     }
 
+    public void registerBtDevice(RemoteDevice device){
+        this.btDevice = device;
+    }
+
     public RemoteDevice getBtDevice() {
         return btDevice;
     }

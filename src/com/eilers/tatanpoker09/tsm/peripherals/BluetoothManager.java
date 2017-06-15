@@ -1,23 +1,26 @@
 package com.eilers.tatanpoker09.tsm.peripherals;
 
+import com.eilers.tatanpoker09.tsm.server.ServerManager;
 import com.eilers.tatanpoker09.tsm.server.Tree;
 
 import javax.bluetooth.*;
-import java.rmi.Remote;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-public class BluetoothManager {
+public class BluetoothManager extends Thread{
+    private final ServerManager serverManager;
     private DiscoveryAgent agent;
     private List<RemoteDevice> foundDevices;
 
 
-    public BluetoothManager() {
-
+    public BluetoothManager(ServerManager serverManager) {
+        this.serverManager = serverManager;
     }
 
     public void setup(){
+
         foundDevices = new ArrayList<RemoteDevice>();
     }
 
@@ -28,6 +31,11 @@ public class BluetoothManager {
             Logger log = Tree.getLog();
             public void deviceDiscovered(RemoteDevice btDevice, DeviceClass deviceClass) {
                 log.info("Device " + btDevice.getBluetoothAddress() + " found");
+                try {
+                    log.info("Details: "+btDevice.getFriendlyName(true)+", "+btDevice.isTrustedDevice());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 foundDevices.add(btDevice);
             }
 
@@ -35,6 +43,7 @@ public class BluetoothManager {
                 log.info("Finished device inquiry");
                 synchronized(inquiryCompletedEvent){
                     inquiryCompletedEvent.notifyAll();
+                    serverManager.notifyAll();
                 }
             }
 
@@ -64,5 +73,9 @@ public class BluetoothManager {
 
     public void pairDevice(RemoteDevice device){
         //PAIRING BLUETOOTH WISE.
+    }
+
+    public List<RemoteDevice> getFoundDevices() {
+        return foundDevices;
     }
 }
