@@ -6,5 +6,6 @@ package com.eilers.tatanpoker09.tsm.peripherals;
  *
  */
 public class PeripheralManager {
+    private List<Peripheral> peripherals;
 
 }
