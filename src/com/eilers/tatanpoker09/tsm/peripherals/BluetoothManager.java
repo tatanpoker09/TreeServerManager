@@ -3,6 +3,7 @@ package com.eilers.tatanpoker09.tsm.peripherals;
 import com.eilers.tatanpoker09.tsm.server.Tree;
 
 import javax.bluetooth.*;
+import java.rmi.Remote;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -56,8 +57,12 @@ public class BluetoothManager {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                System.out.println(foundDevices.size() +  " device(s) found");
+                System.out.println(foundDevices.size() + " device(s) found");
             }
         }
+    }
+
+    public void pairDevice(RemoteDevice device){
+        //PAIRING BLUETOOTH WISE.
     }
 }
