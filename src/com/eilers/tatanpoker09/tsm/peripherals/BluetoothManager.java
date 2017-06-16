@@ -9,11 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-public class BluetoothManager extends Thread{
+public class BluetoothManager {
     private final ServerManager serverManager;
     private DiscoveryAgent agent;
     private List<RemoteDevice> foundDevices;
-
+    private boolean searching;
 
     public BluetoothManager(ServerManager serverManager) {
         this.serverManager = serverManager;
@@ -28,6 +28,7 @@ public class BluetoothManager extends Thread{
         final Object inquiryCompletedEvent = new Object();
 
         DiscoveryListener discoveryListener = new DiscoveryListener() {
+        	
             Logger log = Tree.getLog();
             public void deviceDiscovered(RemoteDevice btDevice, DeviceClass deviceClass) {
                 log.info("Device " + btDevice.getBluetoothAddress() + " found");
@@ -43,7 +44,6 @@ public class BluetoothManager extends Thread{
                 log.info("Finished device inquiry");
                 synchronized(inquiryCompletedEvent){
                     inquiryCompletedEvent.notifyAll();
-                    serverManager.notifyAll();
                 }
             }
 
@@ -52,14 +52,14 @@ public class BluetoothManager extends Thread{
             public void serviceSearchCompleted(int i, int i1) {
             }
         };
+        
         synchronized(inquiryCompletedEvent) {
-            boolean started = false;
             try {
-                started = LocalDevice.getLocalDevice().getDiscoveryAgent().startInquiry(DiscoveryAgent.GIAC, discoveryListener);
+                setSearching(LocalDevice.getLocalDevice().getDiscoveryAgent().startInquiry(DiscoveryAgent.GIAC, discoveryListener));
             } catch (BluetoothStateException e) {
                 e.printStackTrace();
             }
-            if (started) {
+            if (isSearching()) {
                 System.out.println("wait for device inquiry to complete...");
                 try {
                     inquiryCompletedEvent.wait();
@@ -78,4 +78,12 @@ public class BluetoothManager extends Thread{
     public List<RemoteDevice> getFoundDevices() {
         return foundDevices;
     }
+
+	public boolean isSearching() {
+		return searching;
+	}
+
+	public void setSearching(boolean searching) {
+		this.searching = searching;
+	}
 }

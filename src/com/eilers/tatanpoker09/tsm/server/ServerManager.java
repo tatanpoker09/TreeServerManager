@@ -49,6 +49,18 @@ public class ServerManager{
 
 		pManager = new PeripheralManager();
 		pManager.setup();
+		
+		synchronized(bManager) {
+			if(bManager.isSearching()) {
+				try {
+					wait();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		
 		postSetup();
 
 	}
