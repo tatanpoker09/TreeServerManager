@@ -2,11 +2,14 @@ package com.eilers.tatanpoker09.tsm.voice;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Callable;
 import java.util.logging.Logger;
 
+import com.eilers.tatanpoker09.tsm.Manager;
 import com.eilers.tatanpoker09.tsm.server.Tree;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 
-public class VoiceManager extends Thread{
+public class VoiceManager implements Callable, Manager {
 	private boolean active;
 	private static final String KEY = "tree";
 	
@@ -19,13 +22,22 @@ public class VoiceManager extends Thread{
 		voiceCommands = new ArrayList<VoiceCommand>();
 	}
 
-	public void setup() {
+	public boolean setup() {
 		//TODO Work with CMU Sphinx4.
+		return true;
 	}
-	
+
+	public void postSetup() {
+
+	}
+
 	public void recognize() {
 		Logger log = Tree.getLog();
 		log.info("Starting Recognizer.");
 		log.info("Stopping recognizer");
+	}
+
+	public Boolean call() throws Exception {
+		return setup();
 	}
 }

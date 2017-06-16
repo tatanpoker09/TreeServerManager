@@ -1,5 +1,6 @@
 package com.eilers.tatanpoker09.tsm.peripherals;
 
+import com.eilers.tatanpoker09.tsm.Manager;
 import com.eilers.tatanpoker09.tsm.server.ServerManager;
 import com.eilers.tatanpoker09.tsm.server.Tree;
 
@@ -7,9 +8,10 @@ import javax.bluetooth.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Callable;
 import java.util.logging.Logger;
 
-public class BluetoothManager extends Thread{
+public class BluetoothManager implements Callable,Manager{
     private final ServerManager serverManager;
     private DiscoveryAgent agent;
     private List<RemoteDevice> foundDevices;
@@ -19,9 +21,15 @@ public class BluetoothManager extends Thread{
         this.serverManager = serverManager;
     }
 
-    public void setup(){
+    public boolean setup(){
 
         foundDevices = new ArrayList<RemoteDevice>();
+        discoverDevices();
+        return (foundDevices.size()>0)? true:false;
+    }
+
+    public void postSetup() {
+
     }
 
     public void discoverDevices(){
@@ -43,7 +51,6 @@ public class BluetoothManager extends Thread{
                 log.info("Finished device inquiry");
                 synchronized(inquiryCompletedEvent){
                     inquiryCompletedEvent.notifyAll();
-                    serverManager.notifyAll();
                 }
             }
 
@@ -77,5 +84,9 @@ public class BluetoothManager extends Thread{
 
     public List<RemoteDevice> getFoundDevices() {
         return foundDevices;
+    }
+
+    public Boolean call() throws Exception {
+        return setup();
     }
 }
