@@ -16,6 +16,7 @@ import com.eilers.tatanpoker09.tsm.peripherals.BluetoothManager;
 import com.eilers.tatanpoker09.tsm.peripherals.Peripheral;
 import com.eilers.tatanpoker09.tsm.peripherals.PeripheralManager;
 import com.eilers.tatanpoker09.tsm.voice.VoiceManager;
+import com.intel.bluetooth.RemoteDeviceHelper;
 
 /**
  * Handles server connections and setup. Pretty much this is the server itself.
@@ -84,15 +85,13 @@ public class ServerManager{
 		} while(!done);
 
 		log.info("Setup has been completed.");
-		postSetup();
 		threadpool.shutdown();
 	}
 	
 	/**
 	 * Any post loading configurations are handled here.
 	 */
-	private void postSetup() {
-		System.out.println(bManager==null);
+    protected void postSetup() {
 		cManager.postSetup();
 
 		Peripheral lights = new Peripheral("LIGHTS");
@@ -100,7 +99,7 @@ public class ServerManager{
 		System.out.println(bManager.getFoundDevices());
 		lights.registerBtDevice(bManager.getFoundDevices().get(0));
 		try {
-			lights.getBtDevice().authenticate();
+			boolean worked = RemoteDeviceHelper.authenticate(lights.getBtDevice(), "1234");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -123,6 +122,7 @@ public class ServerManager{
 				log.info("Client "+clientSocket.getInetAddress()+" has pre-connected to the server.");
 			} catch (IOException e) {
 				log.severe("Client had an error connecting to the server: "+e.getStackTrace());
+				throw new IOException("Error connecting to the server.");
 			}
 		}
 		serverSocket.close();

@@ -1,10 +1,12 @@
 package com.eilers.tatanpoker09.tsm.voice;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.logging.Logger;
 
+import com.eilers.tatanpoker09.tsm.LightSection;
 import com.eilers.tatanpoker09.tsm.Manager;
 import com.eilers.tatanpoker09.tsm.server.Tree;
 import com.sun.org.apache.xpath.internal.operations.Bool;
@@ -24,6 +26,7 @@ public class VoiceManager implements Callable, Manager {
 
 	public boolean setup() {
 		//TODO Work with CMU Sphinx4.
+        LightVoiceCommand lvc = new LightVoiceCommand(new File("resources/voicecommands/lights-on.yml"));
 		return true;
 	}
 

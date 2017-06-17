@@ -11,13 +11,12 @@ import java.util.logging.Logger;
 
 import com.eilers.tatanpoker09.tsm.server.Tree;
 
-public class VoiceCommand {
+public abstract class VoiceCommand {
 	private Set<String> phrases;
 	private Runnable trigger;
 	
-	protected VoiceCommand(File file, Runnable trigger) {
+	protected VoiceCommand(File file) {
 		this.phrases = loadFile(file);
-		this.trigger = trigger;
 	}
 
 	private Set<String> loadFile(File file) {
@@ -52,4 +51,14 @@ public class VoiceCommand {
 		}
 		return phrases;
 	}
+
+	public abstract void parse();
+
+    public Runnable getTrigger() {
+        return trigger;
+    }
+
+    public void setTrigger(Runnable trigger) {
+        this.trigger = trigger;
+    }
 }

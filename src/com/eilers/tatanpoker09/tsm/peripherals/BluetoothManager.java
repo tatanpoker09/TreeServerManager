@@ -3,8 +3,11 @@ package com.eilers.tatanpoker09.tsm.peripherals;
 import com.eilers.tatanpoker09.tsm.Manager;
 import com.eilers.tatanpoker09.tsm.server.ServerManager;
 import com.eilers.tatanpoker09.tsm.server.Tree;
+import com.intel.bluetooth.RemoteDeviceHelper;
 
 import javax.bluetooth.*;
+import javax.microedition.io.Connection;
+import javax.microedition.io.Connector;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +43,7 @@ public class BluetoothManager implements Callable,Manager{
             public void deviceDiscovered(RemoteDevice btDevice, DeviceClass deviceClass) {
                 log.info("Device " + btDevice.getBluetoothAddress() + " found");
                 try {
-                    log.info("Details: "+btDevice.getFriendlyName(true)+", "+btDevice.isTrustedDevice());
+                    log.info("Details: "+btDevice.getFriendlyName(false)+", "+btDevice.isTrustedDevice());
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -55,6 +58,7 @@ public class BluetoothManager implements Callable,Manager{
             }
 
             public void servicesDiscovered(int i, ServiceRecord[] serviceRecords) {
+                
             }
             public void serviceSearchCompleted(int i, int i1) {
             }
@@ -78,8 +82,8 @@ public class BluetoothManager implements Callable,Manager{
         }
     }
 
-    public void pairDevice(RemoteDevice device){
-        //PAIRING BLUETOOTH WISE.
+    public void connectDevice(RemoteDevice device){
+        //CONNECTING BLUETOOTH WISE.
     }
 
     public List<RemoteDevice> getFoundDevices() {
@@ -88,5 +92,14 @@ public class BluetoothManager implements Callable,Manager{
 
     public Boolean call() throws Exception {
         return setup();
+    }
+
+    public boolean pair(RemoteDevice device, String pin){
+        try {
+            return RemoteDeviceHelper.authenticate(device, pin);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }
