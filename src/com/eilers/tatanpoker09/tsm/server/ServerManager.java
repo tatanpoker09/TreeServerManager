@@ -63,12 +63,13 @@ public class ServerManager{
 		setupTasks.add(future);
 		this.bManager = bManager;
 
-		pManager = new PeripheralManager();
+		PeripheralManager pManager = new PeripheralManager();
 		future = threadpool.submit(pManager);
 		setupTasks.add(future);
 		this.pManager = pManager;
+		pManager.setup();
 
-		boolean done = false;
+		boolean done;
 		do{
 			done = true;
 			for(Future f : setupTasks){
@@ -86,6 +87,7 @@ public class ServerManager{
 
 		log.info("Setup has been completed.");
 		threadpool.shutdown();
+		postSetup();
 	}
 	
 	/**
@@ -95,11 +97,10 @@ public class ServerManager{
 		cManager.postSetup();
 
 		Peripheral lights = new Peripheral("LIGHTS");
-		System.out.print("Found Devices:");
-		System.out.println(bManager.getFoundDevices());
 		lights.registerBtDevice(bManager.getFoundDevices().get(0));
 		try {
 			boolean worked = RemoteDeviceHelper.authenticate(lights.getBtDevice(), "1234");
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

@@ -37,7 +37,6 @@ public class Tree {
 		ServerManager serverManager = new ServerManager(PROGRAM_NAME, MAXIMUM_CONNECTIONS);
 		getLog().info("Server Started.");
 		serverManager.setup();
-		serverManager.postSetup();
 		Tree.server = serverManager;
 	}
 

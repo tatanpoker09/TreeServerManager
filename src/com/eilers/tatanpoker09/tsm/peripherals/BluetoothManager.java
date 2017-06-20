@@ -6,71 +6,46 @@ import com.eilers.tatanpoker09.tsm.server.Tree;
 import com.intel.bluetooth.RemoteDeviceHelper;
 
 import javax.bluetooth.*;
-import javax.microedition.io.Connection;
-import javax.microedition.io.Connector;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.Callable;
 import java.util.logging.Logger;
 
-public class BluetoothManager implements Callable,Manager{
+public class BluetoothManager implements Callable, Manager {
     private final ServerManager serverManager;
     private DiscoveryAgent agent;
     private List<RemoteDevice> foundDevices;
-
+    private boolean searching;
 
     public BluetoothManager(ServerManager serverManager) {
         this.serverManager = serverManager;
     }
 
-    public boolean setup(){
+    public boolean setup() {
 
         foundDevices = new ArrayList<RemoteDevice>();
         discoverDevices();
-        return (foundDevices.size()>0)? true:false;
+        return (foundDevices.size() > 0) ? true : false;
     }
 
     public void postSetup() {
 
     }
 
-    public void discoverDevices(){
+    public void discoverDevices() {
         final Object inquiryCompletedEvent = new Object();
+        MyDiscoveryListener discoveryListener = new MyDiscoveryListener(this, inquiryCompletedEvent);
 
-        DiscoveryListener discoveryListener = new DiscoveryListener() {
-            Logger log = Tree.getLog();
-            public void deviceDiscovered(RemoteDevice btDevice, DeviceClass deviceClass) {
-                log.info("Device " + btDevice.getBluetoothAddress() + " found");
-                try {
-                    log.info("Details: "+btDevice.getFriendlyName(false)+", "+btDevice.isTrustedDevice());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                foundDevices.add(btDevice);
-            }
-
-            public void inquiryCompleted(int i) {
-                log.info("Finished device inquiry");
-                synchronized(inquiryCompletedEvent){
-                    inquiryCompletedEvent.notifyAll();
-                }
-            }
-
-            public void servicesDiscovered(int i, ServiceRecord[] serviceRecords) {
-                
-            }
-            public void serviceSearchCompleted(int i, int i1) {
-            }
-        };
-        synchronized(inquiryCompletedEvent) {
-            boolean started = false;
+        synchronized (inquiryCompletedEvent) {
             try {
-                started = LocalDevice.getLocalDevice().getDiscoveryAgent().startInquiry(DiscoveryAgent.GIAC, discoveryListener);
+                this.agent = LocalDevice.getLocalDevice().getDiscoveryAgent();
+                setSearching(this.agent.startInquiry(DiscoveryAgent.GIAC, discoveryListener));
             } catch (BluetoothStateException e) {
                 e.printStackTrace();
             }
-            if (started) {
+            if (isSearching()) {
                 System.out.println("wait for device inquiry to complete...");
                 try {
                     inquiryCompletedEvent.wait();
@@ -82,7 +57,7 @@ public class BluetoothManager implements Callable,Manager{
         }
     }
 
-    public void connectDevice(RemoteDevice device){
+    public void connectDevice(RemoteDevice device) {
         //CONNECTING BLUETOOTH WISE.
     }
 
@@ -94,12 +69,83 @@ public class BluetoothManager implements Callable,Manager{
         return setup();
     }
 
-    public boolean pair(RemoteDevice device, String pin){
+    public boolean pair(RemoteDevice device, String pin) {
         try {
             return RemoteDeviceHelper.authenticate(device, pin);
         } catch (IOException e) {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public void searchServices(RemoteDevice device) {
+        UUID[] uuidSet = new UUID[1];
+        uuidSet[0] = new UUID(0x1105); //OBEX Object Push service
+        int[] attrIDs = new int[]{
+                0x0100 // Service name
+        };
+
+        final Object inquiryCompletedEvent = new Object();
+
+        synchronized (inquiryCompletedEvent) {
+            try {
+                this.agent = LocalDevice.getLocalDevice().getDiscoveryAgent();
+                agent.searchServices(null, uuidSet, device, new MyDiscoveryListener(this, inquiryCompletedEvent));
+            } catch (BluetoothStateException e) {
+                e.printStackTrace();
+            }
+            if (isSearching()) {
+                System.out.println("wait for service inquiry to complete...");
+                try {
+                    inquiryCompletedEvent.wait();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    public boolean isSearching() {
+        return searching;
+    }
+
+    public void setSearching(boolean searching) {
+        this.searching = searching;
+    }
+}
+
+
+class MyDiscoveryListener implements DiscoveryListener {
+    BluetoothManager bluetoothManager;
+    Logger log = Tree.getLog();
+    Object lock;
+
+    public MyDiscoveryListener(BluetoothManager bl, Object lock){
+        this.bluetoothManager = bl;
+        this.lock = lock;
+    }
+
+    public void deviceDiscovered(RemoteDevice btDevice, DeviceClass deviceClass) {
+        log.info("Device " + btDevice.getBluetoothAddress() + " found");
+        try {
+            log.info("Details: " + btDevice.getFriendlyName(false) + ", " + btDevice.isTrustedDevice());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        bluetoothManager.getFoundDevices().add(btDevice);
+    }
+
+    public void inquiryCompleted(int i) {
+        log.info("Finished device inquiry");
+        synchronized (lock) {
+            lock.notifyAll();
+        }
+    }
+
+    public void servicesDiscovered(int i, ServiceRecord[] serviceRecords) {
+
+    }
+
+    public void serviceSearchCompleted(int i, int i1) {
     }
 }
