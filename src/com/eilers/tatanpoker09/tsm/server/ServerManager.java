@@ -100,7 +100,6 @@ public class ServerManager{
 		lights.registerBtDevice(bManager.getFoundDevices().get(0));
 		try {
 			boolean worked = RemoteDeviceHelper.authenticate(lights.getBtDevice(), "1234");
-
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

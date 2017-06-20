@@ -6,10 +6,8 @@ import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.logging.Logger;
 
-import com.eilers.tatanpoker09.tsm.LightSection;
 import com.eilers.tatanpoker09.tsm.Manager;
 import com.eilers.tatanpoker09.tsm.server.Tree;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 
 public class VoiceManager implements Callable, Manager {
 	private boolean active;
