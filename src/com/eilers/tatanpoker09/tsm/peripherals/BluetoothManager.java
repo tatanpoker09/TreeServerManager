@@ -56,7 +56,6 @@ public class BluetoothManager implements Callable, Manager {
 			try {
 				this.agent = LocalDevice.getLocalDevice().getDiscoveryAgent();
 				setSearching(this.agent.startInquiry(DiscoveryAgent.GIAC, discoveryListener));
-				searchServices(getFoundDevices().get(0));
 			} catch (BluetoothStateException e) {
 				e.printStackTrace();
 			}
@@ -158,7 +157,8 @@ class MyDiscoveryListener implements DiscoveryListener {
 	}
 
 	public void servicesDiscovered(int j, ServiceRecord[] services) {
-		for (int i = 0; i < services.length; i++) {
+        System.out.println(services);
+        for (int i = 0; i < services.length; i++) {
 			String url = services[i].getConnectionURL(ServiceRecord.NOAUTHENTICATE_NOENCRYPT, false);
 			if (url == null) {
 				continue;

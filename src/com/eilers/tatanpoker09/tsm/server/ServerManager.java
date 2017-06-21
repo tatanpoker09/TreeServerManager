@@ -1,5 +1,7 @@
 package com.eilers.tatanpoker09.tsm.server;
 
+import java.io.DataOutput;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -16,7 +18,10 @@ import com.eilers.tatanpoker09.tsm.peripherals.BluetoothManager;
 import com.eilers.tatanpoker09.tsm.peripherals.Peripheral;
 import com.eilers.tatanpoker09.tsm.peripherals.PeripheralManager;
 import com.eilers.tatanpoker09.tsm.voice.VoiceManager;
+import com.intel.bluetooth.MicroeditionConnector;
 import com.intel.bluetooth.RemoteDeviceHelper;
+
+import javax.microedition.io.StreamConnection;
 
 /**
  * Handles server connections and setup. Pretty much this is the server itself.
@@ -98,12 +103,24 @@ public class ServerManager{
 
 		Peripheral lights = new Peripheral("LIGHTS");
 		lights.registerBtDevice(bManager.getFoundDevices().get(0));
-		try {
-			boolean worked = RemoteDeviceHelper.authenticate(lights.getBtDevice(), "1234");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		pManager.addPeripheral(lights);
+        boolean worked = bManager.pair(bManager.getFoundDevices().get(0), "3456");
+        try {
+            String serverURL = "btspp://"+bManager.getFoundDevices().get(0).getBluetoothAddress()+":1;authenticate=false;encrypt=false;master=false";
+            StreamConnection sc = (StreamConnection)MicroeditionConnector.open(serverURL);
+            DataOutputStream os = sc.openDataOutputStream();
+            os.write("PrenderLED".getBytes());
+            Thread.sleep(5000);
+            os.write("ApagarLED".getBytes());
+            os.flush();
+            os.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        pManager.addPeripheral(lights);
 		LightSection ls = new LightSection("",lights);
 	}
 	
