@@ -35,6 +35,7 @@ public class VoiceManager implements Callable, Manager {
 	public void recognize() {
 		Logger log = Tree.getLog();
 		log.info("Starting Recognizer.");
+		
 		log.info("Stopping recognizer");
 	}
 

@@ -19,6 +19,11 @@ public class LightSection {
 
 
     public void turn(boolean on){
-        RemoteDevice remoteDevice = peripheral.getBtDevice();
+        peripheral.openStream();
+        if(on) {
+        	peripheral.send("PrenderLED");
+        } else {
+        	peripheral.send("ApagarLED");
+        }
     }
 }

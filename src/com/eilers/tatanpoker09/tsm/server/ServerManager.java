@@ -103,25 +103,9 @@ public class ServerManager{
 
 		Peripheral lights = new Peripheral("LIGHTS");
 		lights.registerBtDevice(bManager.getFoundDevices().get(0));
-        boolean worked = bManager.pair(bManager.getFoundDevices().get(0), "3456");
-        try {
-            String serverURL = "btspp://"+bManager.getFoundDevices().get(0).getBluetoothAddress()+":1;authenticate=false;encrypt=false;master=false";
-            StreamConnection sc = (StreamConnection)MicroeditionConnector.open(serverURL);
-            DataOutputStream os = sc.openDataOutputStream();
-            os.write("PrenderLED".getBytes());
-            Thread.sleep(5000);
-            os.write("ApagarLED".getBytes());
-            os.flush();
-            os.close();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
         pManager.addPeripheral(lights);
 		LightSection ls = new LightSection("",lights);
+		ls.turn(true);
 	}
 	
 	/**
