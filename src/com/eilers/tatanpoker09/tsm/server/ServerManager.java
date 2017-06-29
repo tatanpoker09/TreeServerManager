@@ -13,6 +13,7 @@ import java.util.concurrent.Future;
 import java.util.logging.Logger;
 
 import com.eilers.tatanpoker09.tsm.LightSection;
+import com.eilers.tatanpoker09.tsm.client.TreeClient;
 import com.eilers.tatanpoker09.tsm.commandmanagement.CommandManager;
 import com.eilers.tatanpoker09.tsm.peripherals.BluetoothManager;
 import com.eilers.tatanpoker09.tsm.peripherals.Peripheral;
@@ -103,32 +104,16 @@ public class ServerManager{
 /*
 		Peripheral lights = new Peripheral("LIGHTS");
 		lights.registerBtDevice(bManager.getFoundDevices().get(0));
-        boolean worked = bManager.pair(bManager.getFoundDevices().get(0), "3456");
-        try {
-            String serverURL = "btspp://"+bManager.getFoundDevices().get(0).getBluetoothAddress()+":1;authenticate=false;encrypt=false;master=false";
-            StreamConnection sc = (StreamConnection)MicroeditionConnector.open(serverURL);
-            DataOutputStream os = sc.openDataOutputStream();
-            os.write("PrenderLED".getBytes());
-            Thread.sleep(5000);
-            os.write("ApagarLED".getBytes());
-            os.flush();
-            os.close();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
         pManager.addPeripheral(lights);
-		LightSection ls = new LightSection("",lights);*/
+		LightSection ls = new LightSection("",lights);
+		ls.turn(true);*/
 
         try {
             openConnection(7727);
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
+	}
 	
 	/**
 	 * Opens the connection to the server, allowing Clients to Join.
@@ -138,11 +123,13 @@ public class ServerManager{
 	public void openConnection(int port) throws IOException {
 		Logger log = Tree.getLog();
 		ServerSocket serverSocket = new ServerSocket(port);
-		log.info("Starting listening loop.");
+		log.info("Starting listening loop.|");
 		while(running) {
 			Socket clientSocket;
 			try {
 				clientSocket = serverSocket.accept();
+                TreeClient tc = new TreeClient(clientSocket);
+                tc.run();
 				log.info("Client "+clientSocket.getInetAddress()+" has pre-connected to the server.");
 			} catch (IOException e) {
 				log.severe("Client had an error connecting to the server: "+e.getStackTrace());
