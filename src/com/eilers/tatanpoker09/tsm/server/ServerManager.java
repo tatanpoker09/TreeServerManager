@@ -100,7 +100,7 @@ public class ServerManager{
 	 */
     protected void postSetup() {
 		cManager.postSetup();
-
+/*
 		Peripheral lights = new Peripheral("LIGHTS");
 		lights.registerBtDevice(bManager.getFoundDevices().get(0));
         boolean worked = bManager.pair(bManager.getFoundDevices().get(0), "3456");
@@ -121,8 +121,14 @@ public class ServerManager{
         }
 
         pManager.addPeripheral(lights);
-		LightSection ls = new LightSection("",lights);
-	}
+		LightSection ls = new LightSection("",lights);*/
+
+        try {
+            openConnection(7727);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 	
 	/**
 	 * Opens the connection to the server, allowing Clients to Join.
@@ -132,6 +138,7 @@ public class ServerManager{
 	public void openConnection(int port) throws IOException {
 		Logger log = Tree.getLog();
 		ServerSocket serverSocket = new ServerSocket(port);
+		log.info("Starting listening loop.");
 		while(running) {
 			Socket clientSocket;
 			try {
