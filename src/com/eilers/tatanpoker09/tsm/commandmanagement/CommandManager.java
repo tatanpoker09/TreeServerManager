@@ -1,5 +1,6 @@
 package com.eilers.tatanpoker09.tsm.commandmanagement;
 
+import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -45,5 +46,20 @@ public class CommandManager implements Callable, Manager {
 
 	public Boolean call() throws Exception {
 		return setup();
+	}
+
+	/**
+	 *
+	 * @param parseInput - The input string to parse.
+	 * @param ip - The ip of the client.
+	 * @return if the command is a disconnect query.
+	 */
+	public boolean parseAndRun(String parseInput, InetAddress ip){
+		System.out.println(parseInput+" getting parsed");
+		return false;
+	}
+
+	private void run(){
+
 	}
 }

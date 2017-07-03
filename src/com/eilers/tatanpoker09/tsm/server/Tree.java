@@ -30,14 +30,14 @@ public class Tree {
 	
 	/**
 	 * Start of the program, loads up the logger, starts the server with a name and max connections and loads up the server setup.
-	 * @param args
+	 * @param args - The arguments to start the program.
 	 */
 	public static void main(String[] args) {
 		loadLogger();
 		ServerManager serverManager = new ServerManager(PROGRAM_NAME, MAXIMUM_CONNECTIONS);
+		Tree.server = serverManager;
 		getLog().info("Server Started.");
 		serverManager.setup();
-		Tree.server = serverManager;
 	}
 
 	/**
