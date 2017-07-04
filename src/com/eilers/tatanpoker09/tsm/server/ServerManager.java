@@ -12,17 +12,11 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.logging.Logger;
 
-import com.eilers.tatanpoker09.tsm.LightSection;
 import com.eilers.tatanpoker09.tsm.client.TreeClient;
 import com.eilers.tatanpoker09.tsm.commandmanagement.CommandManager;
 import com.eilers.tatanpoker09.tsm.peripherals.BluetoothManager;
-import com.eilers.tatanpoker09.tsm.peripherals.Peripheral;
 import com.eilers.tatanpoker09.tsm.peripherals.PeripheralManager;
 import com.eilers.tatanpoker09.tsm.voice.VoiceManager;
-import com.intel.bluetooth.MicroeditionConnector;
-import com.intel.bluetooth.RemoteDeviceHelper;
-
-import javax.microedition.io.StreamConnection;
 
 /**
  * Handles server connections and setup. Pretty much this is the server itself.

@@ -3,10 +3,7 @@ package com.eilers.tatanpoker09.tsm.client;
 import com.eilers.tatanpoker09.tsm.commandmanagement.CommandManager;
 import com.eilers.tatanpoker09.tsm.server.Tree;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
 
@@ -27,9 +24,7 @@ public class TreeClient extends Thread {
 	@Override
     public void run(){
         try {
-            PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-            out.write("[tree]connected");
-            out.flush();
+            sendMessage("connected");
             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             String inputLine, outputLine;
 
@@ -45,5 +40,14 @@ public class TreeClient extends Thread {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void sendMessage(String message) throws IOException {
+        byte[] messageBytes = (message+"1").getBytes();
+        DataOutputStream dOut = new DataOutputStream(socket.getOutputStream());
+
+        dOut.writeInt(messageBytes.length); // write length of the message
+        System.out.println(messageBytes.length);
+        dOut.write(messageBytes);
     }
 }
