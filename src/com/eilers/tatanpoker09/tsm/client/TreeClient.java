@@ -6,6 +6,7 @@ import com.eilers.tatanpoker09.tsm.server.Tree;
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.nio.ByteBuffer;
 
 /**
  * Represents a Client Connection, handles the connection with a single client.
@@ -43,11 +44,12 @@ public class TreeClient extends Thread {
     }
 
     public void sendMessage(String message) throws IOException {
-        byte[] messageBytes = (message+"1").getBytes();
-        DataOutputStream dOut = new DataOutputStream(socket.getOutputStream());
-
-        dOut.writeInt(messageBytes.length); // write length of the message
-        System.out.println(messageBytes.length);
-        dOut.write(messageBytes);
+        OutputStream out = socket.getOutputStream();
+        //convert length to byte array of length 4
+        ByteBuffer bb = ByteBuffer.allocate(4+message.length());
+        bb.putInt(message.length());
+        bb.put(message.getBytes());
+        out.write(bb.array());
+        out.flush();
     }
 }

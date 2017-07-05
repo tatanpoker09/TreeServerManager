@@ -33,7 +33,6 @@ public class CommandManager implements Callable, Manager {
 	}
 	
 	public void postSetup() {
-		
 	}
 
 	public List<Command> getCommands() {
