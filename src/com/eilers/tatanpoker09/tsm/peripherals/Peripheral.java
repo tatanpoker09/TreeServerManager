@@ -41,7 +41,18 @@ public class Peripheral extends Thread{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	
+	}
+
+	public void closeStream(){
+    	if(this.os!=null){
+            try {
+                this.os.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("Stream is already closed!");
+        }
 	}
 	public void openStream() {
 		openStream(getServerURL());
@@ -57,7 +68,6 @@ public class Peripheral extends Thread{
 			os.write(info.getBytes());
 			os.flush();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
