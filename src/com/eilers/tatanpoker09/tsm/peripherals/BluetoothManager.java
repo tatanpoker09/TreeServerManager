@@ -2,6 +2,8 @@ package com.eilers.tatanpoker09.tsm.peripherals;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.charset.Charset;
+import java.rmi.Remote;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -23,9 +25,12 @@ import javax.obex.Operation;
 import javax.obex.ResponseCodes;
 
 import com.eilers.tatanpoker09.tsm.Manager;
+import com.eilers.tatanpoker09.tsm.server.MQTTManager;
 import com.eilers.tatanpoker09.tsm.server.ServerManager;
 import com.eilers.tatanpoker09.tsm.server.Tree;
 import com.intel.bluetooth.RemoteDeviceHelper;
+import net.sf.xenqtt.client.PublishMessage;
+import net.sf.xenqtt.message.QoS;
 
 public class BluetoothManager implements Callable, Manager {
 	private final ServerManager serverManager;
@@ -38,7 +43,6 @@ public class BluetoothManager implements Callable, Manager {
 	}
 
 	public boolean setup() {
-
 		foundDevices = new ArrayList<RemoteDevice>();
 		discoverDevices();
 		return (foundDevices.size() > 0) ? true : false;
@@ -67,9 +71,26 @@ public class BluetoothManager implements Callable, Manager {
 					e.printStackTrace();
 				}
 				System.out.println(foundDevices.size() + " device(s) found");
+				byte[][] deviceBytes = convertToBytes(foundDevices);
+				for(byte[] array : deviceBytes) {
+                    MQTTManager.getClient().publish(new PublishMessage("manager/bluetooth/devices", QoS.AT_LEAST_ONCE, array));
+                }
 			}
 		}
 	}
+    private static byte[][] convertToBytes(List<RemoteDevice> devices) {
+        byte[][] data = new byte[devices.size()][];
+        for (int i = 0; i < devices.size(); i++) {
+            String string = null;
+            try {
+                string = devices.get(i).getFriendlyName(true);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            data[i] = string.getBytes();
+        }
+        return data;
+    }
 
 	public void connectDevice(RemoteDevice device) {
 		//CONNECTING BLUETOOTH WISE.

@@ -7,6 +7,8 @@ import java.util.concurrent.Callable;
 
 import com.eilers.tatanpoker09.tsm.Manager;
 import com.eilers.tatanpoker09.tsm.commands.LightsCommand;
+import com.eilers.tatanpoker09.tsm.peripherals.BluetoothManager;
+import com.eilers.tatanpoker09.tsm.server.Tree;
 
 /**
  * Command Manager. Handles command loading, unloading, enabling.
@@ -48,13 +50,19 @@ public class CommandManager implements Callable, Manager {
 	}
 
 	/**
-	 *
-	 * @param parseInput - The input string to parse.
-	 * @param ip - The ip of the client.
+	 * @param topic - The topic the message was published in.
+	 * @param payload - The actual message.
 	 * @return if the command is a disconnect query.
 	 */
-	public boolean parseAndRun(String parseInput, InetAddress ip){
-		System.out.println(parseInput+" getting parsed");
+	public boolean parseAndRun(String topic, String payload){
+		System.out.println(topic+","+payload+" getting parsed");
+		if(topic.equals("manager/bluetooth/")){
+		    if(payload.equals("search")){
+                BluetoothManager bm = Tree.getServer().getbManager();
+                bm.discoverDevices();
+            }
+        }
+
 		return false;
 	}
 

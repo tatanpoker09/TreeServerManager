@@ -6,17 +6,19 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.logging.Logger;
-
-import com.eilers.tatanpoker09.tsm.client.TreeClient;
 import com.eilers.tatanpoker09.tsm.commandmanagement.CommandManager;
 import com.eilers.tatanpoker09.tsm.peripherals.BluetoothManager;
 import com.eilers.tatanpoker09.tsm.peripherals.PeripheralManager;
 import com.eilers.tatanpoker09.tsm.voice.VoiceManager;
+import net.sf.xenqtt.client.*;
+import net.sf.xenqtt.message.ConnectReturnCode;
+import net.sf.xenqtt.message.QoS;
 
 /**
  * Handles server connections and setup. Pretty much this is the server itself.
@@ -95,6 +97,7 @@ public class ServerManager{
 	 */
     protected void postSetup() {
 		cManager.postSetup();
+		int port = 7727;
 /*
 		Peripheral lights = new Peripheral("LIGHTS");
 		lights.registerBtDevice(bManager.getFoundDevices().get(0));
@@ -102,8 +105,15 @@ public class ServerManager{
 		LightSection ls = new LightSection("",lights);
 		ls.turn(true);*/
 
+
+		TreeServerMQTTListener listener = new TreeServerMQTTListener();
+		Logger log = Tree.getLog();
+
+		MQTTManager mqttManager = new MQTTManager();
+		mqttManager.start();
+
         try {
-            openConnection(7727);
+            openConnection(port);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -116,22 +126,9 @@ public class ServerManager{
 	 */
 	public void openConnection(int port) throws IOException {
 		Logger log = Tree.getLog();
-		ServerSocket serverSocket = new ServerSocket(port);
-		log.info("Starting listening loop.|");
-		while(running) {
-			Socket clientSocket;
-			try {
-				clientSocket = serverSocket.accept();
-                TreeClient tc = new TreeClient(clientSocket);
-                tc.run();
-				log.info("Client "+clientSocket.getInetAddress()+" has pre-connected to the server.");
-			} catch (IOException e) {
-				log.severe("Client had an error connecting to the server: "+e.getStackTrace());
-				throw new IOException("Error connecting to the server.");
-			}
-		}
-		serverSocket.close();
-		log.info("Closing server!");
+
+		/* TODO CHECK INFO FROM MQTT CONNECTIONS */
+		//log.info("Closing server!");
 	}
 
 	public int getMaximumConnections() {
@@ -152,5 +149,31 @@ public class ServerManager{
 
 	public void setcManager(CommandManager cManager) {
 		this.cManager = cManager;
+	}
+
+    public BluetoothManager getbManager() {
+        return bManager;
+    }
+}
+
+class TreeServerMQTTListener implements MqttClientListener {
+
+	final List<String> catalog = Collections.synchronizedList(new ArrayList<String>());
+
+	public void publishReceived(MqttClient mqttClient, PublishMessage message) {
+		System.out.println("Message recieved: "+message);
+	}
+
+	public void disconnected(MqttClient mqttClient, Throwable cause, boolean reconnecting) {
+		Logger log = Tree.getLog();
+		if (cause != null) {
+			log.severe("Disconnected from the broker due to an exception: "+cause);
+		} else {
+			log.info("Disconnecting from the broker.");
+		}
+
+		if (reconnecting) {
+			log.info("Attempting to reconnect to the broker.");
+		}
 	}
 }
