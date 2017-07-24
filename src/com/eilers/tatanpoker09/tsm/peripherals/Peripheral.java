@@ -8,12 +8,14 @@ import javax.microedition.io.StreamConnection;
 
 import com.eilers.tatanpoker09.tsm.server.Tree;
 import com.intel.bluetooth.MicroeditionConnector;
+import com.sun.org.apache.xpath.internal.SourceTree;
 
 public class Peripheral extends Thread{
     private String type;
     private RemoteDevice btDevice; //Bluetooth.
     private PeripheralStatus status;
     private DataOutputStream os;
+    private StreamConnection streamConnection;
     
     
     public Peripheral(String type){
@@ -33,26 +35,39 @@ public class Peripheral extends Thread{
 	}
 	
 	public void openStream(String serverURL) {
-		StreamConnection sc;
-		try {
-			sc = (StreamConnection)MicroeditionConnector.open(serverURL);
-			DataOutputStream os = sc.openDataOutputStream();
-			this.os = os;
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+        if(this.os==null) {
+            StreamConnection sc;
+            try {
+                sc = (StreamConnection) MicroeditionConnector.open(serverURL);
+                DataOutputStream os = sc.openDataOutputStream();
+                this.os = os;
+                this.streamConnection = sc;
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
 	}
 
 	public void closeStream(){
     	if(this.os!=null){
             try {
                 this.os.close();
+                this.os = null;
             } catch (IOException e) {
                 e.printStackTrace();
             }
         } else {
             System.out.println("Stream is already closed!");
+        }
+        if(this.streamConnection!=null){
+            try{
+                this.streamConnection.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("Stream is closed af!");
         }
 	}
 	public void openStream() {
@@ -65,6 +80,13 @@ public class Peripheral extends Thread{
 	
 	
 	public void send(String info) {
+	    if(this.os==null){
+            try {
+                this.os = streamConnection.openDataOutputStream();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
 		try {
 			os.write(info.getBytes());
 			os.flush();

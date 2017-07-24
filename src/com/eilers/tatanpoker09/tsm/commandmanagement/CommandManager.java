@@ -11,6 +11,7 @@ import com.eilers.tatanpoker09.tsm.commands.LightsCommand;
 import com.eilers.tatanpoker09.tsm.peripherals.BluetoothManager;
 import com.eilers.tatanpoker09.tsm.peripherals.Peripheral;
 import com.eilers.tatanpoker09.tsm.server.Tree;
+import javafx.scene.effect.Light;
 import sun.management.counter.perf.PerfInstrumentation;
 
 /**
@@ -71,6 +72,15 @@ public class CommandManager implements Callable, Manager {
                 Peripheral p = Peripheral.getByName("Lights", info[1]);
                 LightSection ls = new LightSection(info[0], p);
                 ls.register();
+                break;
+            default:
+                System.out.println("entered");
+                if(topic.startsWith("module/lights/")){
+                    String lsname = topic.replace("module/lights/", "");
+                    LightSection lightSection = LightSection.getByName(lsname);
+                    lightSection.turn(Boolean.parseBoolean(payload));
+                }
+                break;
         }
 
 		return false;
