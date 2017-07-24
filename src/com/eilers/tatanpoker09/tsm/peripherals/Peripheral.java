@@ -6,6 +6,7 @@ import java.io.IOException;
 import javax.bluetooth.RemoteDevice;
 import javax.microedition.io.StreamConnection;
 
+import com.eilers.tatanpoker09.tsm.server.Tree;
 import com.intel.bluetooth.MicroeditionConnector;
 
 public class Peripheral extends Thread{
@@ -71,4 +72,21 @@ public class Peripheral extends Thread{
 			e.printStackTrace();
 		}
 	}
+
+    public static Peripheral getByName(String type, String name) {
+	    Peripheral p = new Peripheral(type);
+	    for(RemoteDevice device : Tree.getServer().getbManager().getFoundDevices()){
+            try {
+                System.out.println(device.getFriendlyName(true)+","+name);
+                if(device.getFriendlyName(true).equals(name)) {
+                    System.out.println(3);
+                    p.registerBtDevice(device);
+                    break;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return p;
+    }
 }

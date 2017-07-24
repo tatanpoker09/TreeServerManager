@@ -5,10 +5,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
 
+import com.eilers.tatanpoker09.tsm.LightSection;
 import com.eilers.tatanpoker09.tsm.Manager;
 import com.eilers.tatanpoker09.tsm.commands.LightsCommand;
 import com.eilers.tatanpoker09.tsm.peripherals.BluetoothManager;
+import com.eilers.tatanpoker09.tsm.peripherals.Peripheral;
 import com.eilers.tatanpoker09.tsm.server.Tree;
+import sun.management.counter.perf.PerfInstrumentation;
 
 /**
  * Command Manager. Handles command loading, unloading, enabling.
@@ -56,11 +59,18 @@ public class CommandManager implements Callable, Manager {
 	 */
 	public boolean parseAndRun(String topic, String payload){
 		System.out.println(topic+","+payload+" getting parsed");
-		if(topic.equals("manager/bluetooth/")){
-		    if(payload.equals("search")){
-                BluetoothManager bm = Tree.getServer().getbManager();
-                bm.discoverDevices();
-            }
+		switch(topic){
+            case "manager/bluetooth":
+                if(payload.equals("search")){
+                    BluetoothManager bm = Tree.getServer().getbManager();
+                    bm.discoverDevices();
+                }
+                break;
+            case "module/lights/create":
+                String[] info = payload.split(","); //0 = name, 1 = peripheral.
+                Peripheral p = Peripheral.getByName("Lights", info[1]);
+                LightSection ls = new LightSection(info[0], p);
+                ls.register();
         }
 
 		return false;

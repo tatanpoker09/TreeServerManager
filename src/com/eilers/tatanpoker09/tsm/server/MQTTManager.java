@@ -26,7 +26,7 @@ public class MQTTManager {
     private static AsyncMqttClient client;
 
     public void start() {
-        String ip = "192.168.1.4";
+        String ip = "127.0.0.1";
         String port = "7727";
 
         final CountDownLatch connectLatch = new CountDownLatch(1);
@@ -82,7 +82,7 @@ public class MQTTManager {
             // Create your subscriptions. In this case we want to build up a catalog of classic rock.
             List<Subscription> subscriptions = new ArrayList<Subscription>();
             subscriptions.add(new Subscription("main/tatanroom/lights", QoS.AT_LEAST_ONCE));
-            subscriptions.add(new Subscription("$SYS/#", QoS.AT_LEAST_ONCE));
+            subscriptions.add(new Subscription("manager/bluetooth", QoS.AT_LEAST_ONCE));
             getClient().subscribe(subscriptions);
             while (!getClient().isClosed()) {
                 Thread.sleep(3000);

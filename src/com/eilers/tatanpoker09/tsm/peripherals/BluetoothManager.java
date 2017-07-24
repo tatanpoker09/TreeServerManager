@@ -55,7 +55,7 @@ public class BluetoothManager implements Callable, Manager {
 	public void discoverDevices() {
 		final Object inquiryCompletedEvent = new Object();
 		MyDiscoveryListener discoveryListener = new MyDiscoveryListener(this, inquiryCompletedEvent);
-
+        foundDevices.clear();
 		synchronized (inquiryCompletedEvent) {
 			try {
 				this.agent = LocalDevice.getLocalDevice().getDiscoveryAgent();
