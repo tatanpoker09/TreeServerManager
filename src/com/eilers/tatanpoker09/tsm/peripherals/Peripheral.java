@@ -67,7 +67,7 @@ public class Peripheral extends Thread{
                 e.printStackTrace();
             }
         } else {
-            System.out.println("Stream is closed af!");
+            System.out.println("Stream is closed!");
         }
 	}
 	public void openStream() {

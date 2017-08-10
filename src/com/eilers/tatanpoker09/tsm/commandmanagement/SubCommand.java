@@ -14,16 +14,30 @@ import com.eilers.tatanpoker09.tsm.server.Tree;
 public class SubCommand implements Command{
 	private String name;
 	private String[] args;
+	private CommandTrigger ctrigger;
 	
-	public SubCommand(String name) {
+	public SubCommand(String name, CommandTrigger trigger) {
 		this.name = name;
+		this.ctrigger = trigger;
 	}
 
-	public void onTrigger(String[] args) {
-		
-	}
+    @Override
+    public boolean onTrigger(String topic, String[] args) {
+        ctrigger.call(topic, args);
+        return true;
+    }
 
-	public String getName() {
+    @Override
+    public void defaultTrigger(String topic, String[] args) {
+
+    }
+
+    @Override
+    public boolean isTopic(String topic) {
+        return false;
+    }
+
+    public String getName() {
 		return name;
 	}
 
@@ -33,14 +47,5 @@ public class SubCommand implements Command{
 
 	public void setArgs(String[] args) {
 		this.args = args;
-	}
-
-	/**
-	 * Method used to call the subcommand with a specified configuration.
-	 */
-	public void call(String[] args, InetAddress ip) {
-		Logger log = Tree.getLog();
-		log.info("Subcommand: "+name+" called by: "+ip.toString());
-		onTrigger(args);
 	}
 }

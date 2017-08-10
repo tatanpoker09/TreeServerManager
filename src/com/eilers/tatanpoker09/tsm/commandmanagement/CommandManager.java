@@ -7,6 +7,7 @@ import java.util.concurrent.Callable;
 
 import com.eilers.tatanpoker09.tsm.LightSection;
 import com.eilers.tatanpoker09.tsm.Manager;
+import com.eilers.tatanpoker09.tsm.commands.BluetoothCommand;
 import com.eilers.tatanpoker09.tsm.commands.LightsCommand;
 import com.eilers.tatanpoker09.tsm.peripherals.BluetoothManager;
 import com.eilers.tatanpoker09.tsm.peripherals.Peripheral;
@@ -24,17 +25,23 @@ public class CommandManager implements Callable, Manager {
 	private List<Command> commands;
 	
 	public CommandManager() {
-		
+	    setup();
+		loadCommands();
 	}
-	
-	
-	/**
+
+    private void loadCommands() {
+        LightsCommand lights = new LightsCommand();
+        commands.add(lights);
+        BluetoothCommand bluetooth = new BluetoothCommand();
+        commands.add(bluetooth);
+    }
+
+
+    /**
 	 * Loads all commands and stores them in the "commands" List.
 	 */
 	public boolean setup() {
 		commands = new ArrayList<Command>();
-		LightsCommand lights = new LightsCommand();
-		commands.add(lights);
 		return true;
 	}
 	
@@ -60,27 +67,14 @@ public class CommandManager implements Callable, Manager {
 	 */
 	public boolean parseAndRun(String topic, String payload){
 		System.out.println(topic+","+payload+" getting parsed");
-		switch(topic){
-            case "manager/bluetooth":
-                if(payload.equals("search")){
-                    BluetoothManager bm = Tree.getServer().getbManager();
-                    bm.discoverDevices();
+		for(Command c : commands){
+		    if(c.isTopic(topic)){
+		        String[] args = payload.split(",");
+		        if(!c.onTrigger(topic, args)){
+		            c.defaultTrigger(topic, args);
                 }
-                break;
-            case "module/lights/create":
-                String[] info = payload.split(","); //0 = name, 1 = peripheral.
-                Peripheral p = Peripheral.getByName("Lights", info[1]);
-                LightSection ls = new LightSection(info[0], p);
-                ls.register();
-                break;
-            default:
-                System.out.println("entered");
-                if(topic.startsWith("module/lights/")){
-                    String lsname = topic.replace("module/lights/", "");
-                    LightSection lightSection = LightSection.getByName(lsname);
-                    lightSection.turn(Boolean.parseBoolean(payload));
-                }
-                break;
+		        break;
+            }
         }
 
 		return false;

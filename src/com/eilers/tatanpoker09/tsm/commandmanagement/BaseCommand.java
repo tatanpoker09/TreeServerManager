@@ -8,6 +8,8 @@ import java.util.logging.Logger;
 import com.eilers.tatanpoker09.tsm.server.Tree;
 import com.eilers.tatanpoker09.tsm.commandmanagement.Command;
 
+import javax.print.DocFlavor;
+
 /**
  * Represents a command. Cannot be instantiated as it doesn't represent any specific command. Commands must extend this class.
  * Commands are specified for only server-client protocol communication.
@@ -23,14 +25,15 @@ public abstract class BaseCommand implements Command{
 	 * A list containing all loaded subCommands. Specified during command setup.
 	 */
 	private List<SubCommand> subCommands;
-	private String name;
+	private String topic;
 	
 	/**
 	 * Constructor, creates a Command with a specified name.
-	 * @param name - The command name.
+	 * @param topic - The command topic.
 	 */
-	public BaseCommand(String name) {
-		this.name = name;
+	public BaseCommand(String topic) {
+		this.topic = topic;
+		this.setSubCommands(new ArrayList<SubCommand>());
 		setup();
 	}
 	
@@ -49,24 +52,34 @@ public abstract class BaseCommand implements Command{
 			log.warning("Subcommand collection didn't exist, creating one now.");
 			subCommands = new ArrayList<SubCommand>();
 		}
-		log.info("Adding to: "+this.getName()+" the subcommand: "+sCommand.getName());
+		log.info("Adding to: "+this.getTopic()+" the subcommand: "+sCommand.getName());
 		subCommands.add(sCommand);
 	}
 	
 	/**
 	 * Function that gets triggered after a client connection calls the command.
 	 */
-	public abstract void onTrigger(String[] args);
-	
-	/**
-	 * Function to call when the command gets triggered from somewhere else, mainly a step for logging.
-	 */
-	public void call(String[] args, InetAddress ip) {
-		
-	}
+	public boolean onTrigger(String topic, String[] args){
+        String subcommand = topic.replace(this.topic+"/", "");
+        for(SubCommand subCommand : getSubCommands()) {
+            if(subCommand.getName().equals(subcommand)){
+                subCommand.onTrigger(topic, args);
+                return true;
+            }
+        }
+        return false;
+    }
 
+    public boolean isTopic(String topic) {
+	    return topic.contains(this.topic.toLowerCase());
+    }
 
-
+        /**
+         * If no subcommand is found, this will run.
+         */
+    //It is in fact better than a normal default case as you can work with the topic this way.
+    @Override
+    public abstract void defaultTrigger(String topic, String[] args);
 
 	public List<SubCommand> getSubCommands() {
 		return subCommands;
@@ -76,8 +89,8 @@ public abstract class BaseCommand implements Command{
 		this.subCommands = subCommands;
 	}
 	
-	public String getName() {
-		return name;
+	public String getTopic() {
+		return topic;
 	}
 
 }

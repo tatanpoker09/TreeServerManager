@@ -14,13 +14,7 @@ public interface Command {
 	 * Command containing the command's actions.
 	 * @param args - the extra configurations the command should have.
 	 */
-	public abstract void onTrigger(String[] args);
-	
-	/**
-	 * Function used to call the command from a specific address. 
-	 * Used to log extra connections.
-	 * @param args - the extra configurations the command should have.
-	 * @param ip - The address.
-	 */
-	public void call(String[] args, InetAddress ip);
+	boolean onTrigger(String topic, String[] args);
+    void defaultTrigger(String topic, String[] args);
+    boolean isTopic(String topic);
 }

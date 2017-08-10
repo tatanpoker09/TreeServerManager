@@ -1,26 +1,39 @@
 package com.eilers.tatanpoker09.tsm.commands;
 
+import com.eilers.tatanpoker09.tsm.LightSection;
 import com.eilers.tatanpoker09.tsm.commandmanagement.BaseCommand;
+import com.eilers.tatanpoker09.tsm.commandmanagement.CommandTrigger;
+import com.eilers.tatanpoker09.tsm.commandmanagement.SubCommand;
+import com.eilers.tatanpoker09.tsm.peripherals.Peripheral;
 
 public class LightsCommand extends BaseCommand {
-	private static final String COMMAND_NAME = "Lights";
+	private static final String TOPIC = "modules/lights";
 	
 	public LightsCommand() {
-		super(COMMAND_NAME);
-	}
-	
-	
-	@Override
-	public void onTrigger(String[] args) {
-		
+		super(TOPIC);
+		setup();
 	}
 
-	/**
+    public void defaultTrigger(String topic, String[] args) {
+        String lightsection = topic.replace(TOPIC+"/", "");
+        LightSection lsection = LightSection.getByName(lightsection);
+        boolean on = Boolean.parseBoolean(args[0]);
+        lsection.turn(on);
+    }
+    /**
 	 * Used to load subcommands.
 	 */
 	@Override
 	public void setup() {
-		
+        CommandTrigger createTrigger = new CommandTrigger() {
+            @Override
+            public void call(String topic, String[] info) {
+                Peripheral p = Peripheral.getByName("Lights", info[1]);
+                LightSection ls = new LightSection(info[0], p);
+                ls.register();
+            }
+        };
+        SubCommand createSc = new SubCommand("create", createTrigger);
+		addSubCommand(createSc);
 	}
-	
 }
