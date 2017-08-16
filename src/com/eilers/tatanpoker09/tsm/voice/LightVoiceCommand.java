@@ -6,10 +6,10 @@ import java.io.File;
 
 public class LightVoiceCommand extends VoiceCommand{
     private LightSection section;
-    private boolean status;
+        private boolean status;
 
     protected LightVoiceCommand(File file) {
-        super(file);
+            super(file);
         setTrigger(getTrigger());
     }
 

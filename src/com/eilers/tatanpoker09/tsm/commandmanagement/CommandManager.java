@@ -76,7 +76,6 @@ public class CommandManager implements Callable, Manager {
 		        break;
             }
         }
-
 		return false;
 	}
 

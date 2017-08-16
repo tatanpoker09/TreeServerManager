@@ -73,12 +73,12 @@ public class BluetoothManager implements Callable, Manager {
 				System.out.println(foundDevices.size() + " device(s) found");
 				byte[][] deviceBytes = convertToBytes(foundDevices);
 				for(byte[] array : deviceBytes) {
-                    MQTTManager.getClient().publish(new PublishMessage("manager/bluetooth/devices", QoS.AT_LEAST_ONCE, array));
-                }
+					MQTTManager.getClient().publish(new PublishMessage("manager/bluetooth/devices", QoS.AT_LEAST_ONCE, array));
+				}
 			}
 		}
 	}
-    private static byte[][] convertToBytes(List<RemoteDevice> devices) {
+    public static byte[][] convertToBytes(List<RemoteDevice> devices) {
         byte[][] data = new byte[devices.size()][];
         for (int i = 0; i < devices.size(); i++) {
             String string = null;

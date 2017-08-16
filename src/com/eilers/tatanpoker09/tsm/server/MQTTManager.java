@@ -80,7 +80,7 @@ public class MQTTManager {
                 return;
             }
             // Create your subscriptions. In this case we want to build up a catalog of classic rock.
-            List<Subscription> subscriptions = new ArrayList<Subscription>();
+            List<Subscription> subscriptions = new ArrayList<>();
             subscriptions.add(new Subscription("main/tatanroom/lights", QoS.AT_LEAST_ONCE));
             subscriptions.add(new Subscription("module/lights/create", QoS.AT_LEAST_ONCE));
             subscriptions.add(new Subscription("manager/bluetooth", QoS.AT_LEAST_ONCE));
