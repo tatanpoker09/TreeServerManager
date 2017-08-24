@@ -1,39 +1,33 @@
 package com.eilers.tatanpoker09.tsm.server;
 
-import java.io.DataOutput;
-import java.io.DataOutputStream;
+import com.eilers.tatanpoker09.tsm.Manager;
+import com.eilers.tatanpoker09.tsm.commandmanagement.CommandManager;
+import com.eilers.tatanpoker09.tsm.database.DatabaseManager;
+import com.eilers.tatanpoker09.tsm.peripherals.PeripheralManager;
+import com.eilers.tatanpoker09.tsm.plugins.PluginManager;
+
 import java.io.IOException;
-import java.net.ServerSocket;
-import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.logging.Logger;
-import com.eilers.tatanpoker09.tsm.commandmanagement.CommandManager;
-import com.eilers.tatanpoker09.tsm.peripherals.BluetoothManager;
-import com.eilers.tatanpoker09.tsm.peripherals.PeripheralManager;
-import com.eilers.tatanpoker09.tsm.voice.VoiceManager;
-import net.sf.xenqtt.client.*;
-import net.sf.xenqtt.message.ConnectReturnCode;
-import net.sf.xenqtt.message.QoS;
 
 /**
  * Handles server connections and setup. Pretty much this is the server itself.
  */
-public class ServerManager{
-	private final ExecutorService threadpool = Executors.newFixedThreadPool(5); //One per manager.
+public class ServerManager implements Manager {
+    private final ExecutorService threadpool = Executors.newFixedThreadPool(5); //One per manager.
 
 	private String serverName;
 	private int maximumConnections;
 	private boolean running;
 	
 	private CommandManager cManager;
-	private BluetoothManager bManager;
-	private VoiceManager vManager;
 	private PeripheralManager pManager;
+    private DatabaseManager dManager;
+    private PluginManager pluginManager;
 
 	public ServerManager(String serverName, int maximumConnections) {
 		this.serverName = serverName;
@@ -44,8 +38,8 @@ public class ServerManager{
 	/**
 	 * Loads all managers
 	 */
-	public void setup() {
-		Logger log = Tree.getLog();
+    public boolean setup() {
+        Logger log = Tree.getLog();
 		List<Future> setupTasks = new ArrayList<Future>();
 		log.info("Setting up server: "+serverName);
 
@@ -53,23 +47,24 @@ public class ServerManager{
 		Future future = threadpool.submit(cManager);
 		setupTasks.add(future);
 		this.cManager = cManager;
-		
-		VoiceManager vManager = new VoiceManager();
-		vManager.recognize();
-		future = threadpool.submit(vManager);
-		setupTasks.add(future);
-		this.vManager = vManager;
 
-		BluetoothManager bManager = new BluetoothManager(this);
-		future = threadpool.submit(bManager);
-		setupTasks.add(future);
-		this.bManager = bManager;
 
 		PeripheralManager pManager = new PeripheralManager();
 		future = threadpool.submit(pManager);
 		setupTasks.add(future);
 		this.pManager = pManager;
 		pManager.setup();
+
+        DatabaseManager dManager = new DatabaseManager();
+        future = threadpool.submit(dManager);
+        setupTasks.add(future);
+        this.dManager = dManager;
+
+        if (!dManager.setup()) {
+            //We couldn't connect to the database
+            log.severe("Couldn't connect to the MySQL server! Check to start it up.");
+            return false;
+        }
 
 		boolean done;
 		do{
@@ -90,34 +85,28 @@ public class ServerManager{
 		log.info("Setup has been completed.");
 		threadpool.shutdown();
 		postSetup();
-	}
+        return true;
+    }
 	
 	/**
 	 * Any post loading configurations are handled here.
 	 */
-    protected void postSetup() {
-		cManager.postSetup();
-		int port = 7727;
-/*
-		Peripheral lights = new Peripheral("LIGHTS");
-		lights.registerBtDevice(bManager.getFoundDevices().get(0));
-        pManager.addPeripheral(lights);
-		LightSection ls = new LightSection("",lights);
-		ls.turn(true);*/
-
-
-		TreeServerMQTTListener listener = new TreeServerMQTTListener();
-		Logger log = Tree.getLog();
+    public void postSetup() {
+        Logger log = Tree.getLog();
 
 		MQTTManager mqttManager = new MQTTManager();
-		mqttManager.start();
-
-        try {
-            openConnection(port);
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (!mqttManager.setup()) {
+            log.info("Check your MQTT Broker!");
+            System.exit(0);
+            return;
         }
-	}
+        cManager.postSetup();
+        dManager.postSetup();
+
+
+        PluginManager pluginManager = new PluginManager();
+        this.pluginManager = pluginManager;
+    }
 	
 	/**
 	 * Opens the connection to the server, allowing Clients to Join.
@@ -151,29 +140,11 @@ public class ServerManager{
 		this.cManager = cManager;
 	}
 
-    public BluetoothManager getbManager() {
-        return bManager;
+    public PeripheralManager getpManager() {
+        return pManager;
     }
-}
 
-class TreeServerMQTTListener implements MqttClientListener {
-
-	final List<String> catalog = Collections.synchronizedList(new ArrayList<String>());
-
-	public void publishReceived(MqttClient mqttClient, PublishMessage message) {
-		System.out.println("Message recieved: "+message);
-	}
-
-	public void disconnected(MqttClient mqttClient, Throwable cause, boolean reconnecting) {
-		Logger log = Tree.getLog();
-		if (cause != null) {
-			log.severe("Disconnected from the broker due to an exception: "+cause);
-		} else {
-			log.info("Disconnecting from the broker.");
-		}
-
-		if (reconnecting) {
-			log.info("Attempting to reconnect to the broker.");
-		}
-	}
+    public DatabaseManager getdManager() {
+        return dManager;
+    }
 }

@@ -21,5 +21,6 @@
     <orderEntry type="library" name="Maven: net.sf.bluecove:bluecove:2.1.0" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: net.sf.bluecove:bluecove-gpl:2.1.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: net.sf.bluecove:bluecove-emu:2.1.0" level="project" />
+    <orderEntry type="library" name="Maven: mysql:mysql-connector-java:5.1.39" level="project" />
   </component>
 </module>

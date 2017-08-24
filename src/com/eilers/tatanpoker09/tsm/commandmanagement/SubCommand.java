@@ -1,10 +1,5 @@
 package com.eilers.tatanpoker09.tsm.commandmanagement;
 
-import java.net.InetAddress;
-import java.util.logging.Logger;
-
-import com.eilers.tatanpoker09.tsm.server.Tree;
-
 /**
  * Represents a subcommand. As the name states, it is a section of a BaseCommand.
  * Whenever you call a command, it identifies the BaseCommand, and then tries to identify a subcommand, if it fails it'll call the BaseCommand.
@@ -37,7 +32,12 @@ public class SubCommand implements Command{
         return false;
     }
 
-    public String getName() {
+	@Override
+	public String getTopic() {
+		return null;
+	}
+
+	public String getName() {
 		return name;
 	}
 

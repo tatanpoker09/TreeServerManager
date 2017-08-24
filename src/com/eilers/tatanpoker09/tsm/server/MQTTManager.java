@@ -1,31 +1,33 @@
 package com.eilers.tatanpoker09.tsm.server;
 
+import com.eilers.tatanpoker09.tsm.Manager;
+import com.eilers.tatanpoker09.tsm.commandmanagement.Command;
+import com.eilers.tatanpoker09.tsm.commandmanagement.CommandManager;
+import net.sf.xenqtt.client.*;
+import net.sf.xenqtt.message.ConnectReturnCode;
+import net.sf.xenqtt.message.QoS;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Logger;
 
-import com.eilers.tatanpoker09.tsm.commandmanagement.CommandManager;
-import net.sf.xenqtt.client.AsyncClientListener;
-import net.sf.xenqtt.client.AsyncMqttClient;
-import net.sf.xenqtt.client.MqttClient;
-import net.sf.xenqtt.client.PublishMessage;
-import net.sf.xenqtt.client.Subscription;
-import net.sf.xenqtt.message.ConnectReturnCode;
-import net.sf.xenqtt.message.QoS;
-
 /**
  * Builds music catalogs from years gone by.
  */
-public class MQTTManager {
+public class MQTTManager implements Manager {
 
     private static final Logger log = Tree.getLog();
     private static AsyncMqttClient client;
 
-    public void start() {
+    public static AsyncMqttClient getClient() {
+        return client;
+    }
+
+    @Override
+    public boolean setup() {
         String ip = "127.0.0.1";
         String port = "7727";
 
@@ -77,13 +79,15 @@ public class MQTTManager {
             ConnectReturnCode returnCode = connectReturnCode.get();
             if (returnCode == null || returnCode != ConnectReturnCode.ACCEPTED) {
                 log.severe("Unable to connect to the MQTT broker. Reason: " + returnCode);
-                return;
+                return false;
             }
             // Create your subscriptions. In this case we want to build up a catalog of classic rock.
             List<Subscription> subscriptions = new ArrayList<>();
-            subscriptions.add(new Subscription("main/tatanroom/lights", QoS.AT_LEAST_ONCE));
-            subscriptions.add(new Subscription("module/lights/create", QoS.AT_LEAST_ONCE));
-            subscriptions.add(new Subscription("manager/bluetooth", QoS.AT_LEAST_ONCE));
+            System.out.println(Tree.getServer().getcManager().getCommands());
+            for (Command c : Tree.getServer().getcManager().getCommands()) {
+                String topic = c.getTopic();
+                subscriptions.add(new Subscription(topic, QoS.AT_LEAST_ONCE));
+            }
             getClient().subscribe(subscriptions);
             while (!getClient().isClosed()) {
                 Thread.sleep(3000);
@@ -96,9 +100,11 @@ public class MQTTManager {
                 getClient().disconnect();
             }
         }
+        return true;
     }
 
-    public static AsyncMqttClient getClient() {
-        return client;
+    @Override
+    public void postSetup() {
+
     }
 }

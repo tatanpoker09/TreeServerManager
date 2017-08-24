@@ -13,9 +13,17 @@ import java.util.concurrent.Callable;
  */
 public class PeripheralManager implements Callable,Manager{
     private List<Peripheral> peripherals;
+    private BluetoothManager btManager;
+
 
     public PeripheralManager(){
-
+        BluetoothManager bManager = new BluetoothManager();
+        try {
+            bManager.call();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        this.btManager = bManager;
     }
 
     public boolean setup(){
@@ -42,5 +50,9 @@ public class PeripheralManager implements Callable,Manager{
 
     public Boolean call() throws Exception {
         return setup();
+    }
+
+    public BluetoothManager getBtManager() {
+        return btManager;
     }
 }

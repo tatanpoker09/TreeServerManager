@@ -1,19 +1,12 @@
 package com.eilers.tatanpoker09.tsm.commandmanagement;
 
-import java.net.InetAddress;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.Callable;
-
-import com.eilers.tatanpoker09.tsm.LightSection;
 import com.eilers.tatanpoker09.tsm.Manager;
 import com.eilers.tatanpoker09.tsm.commands.BluetoothCommand;
 import com.eilers.tatanpoker09.tsm.commands.LightsCommand;
-import com.eilers.tatanpoker09.tsm.peripherals.BluetoothManager;
-import com.eilers.tatanpoker09.tsm.peripherals.Peripheral;
-import com.eilers.tatanpoker09.tsm.server.Tree;
-import javafx.scene.effect.Light;
-import sun.management.counter.perf.PerfInstrumentation;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.Callable;
 
 /**
  * Command Manager. Handles command loading, unloading, enabling.
@@ -26,7 +19,6 @@ public class CommandManager implements Callable, Manager {
 	
 	public CommandManager() {
 	    setup();
-		loadCommands();
 	}
 
     private void loadCommands() {
@@ -42,7 +34,8 @@ public class CommandManager implements Callable, Manager {
 	 */
 	public boolean setup() {
 		commands = new ArrayList<Command>();
-		return true;
+        loadCommands();
+        return true;
 	}
 	
 	public void postSetup() {
