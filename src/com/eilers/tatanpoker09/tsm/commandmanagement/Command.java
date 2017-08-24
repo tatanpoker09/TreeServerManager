@@ -1,7 +1,5 @@
 package com.eilers.tatanpoker09.tsm.commandmanagement;
 
-import java.net.InetAddress;
-
 /**
  * Represents a command, either a main command or a subcommand.
  * A command is a piece of code (function), that gets triggered with specific configurations after it is called by its name
@@ -17,4 +15,6 @@ public interface Command {
 	boolean onTrigger(String topic, String[] args);
     void defaultTrigger(String topic, String[] args);
     boolean isTopic(String topic);
+
+    String getTopic();
 }

@@ -1,4 +1,4 @@
-package com.eilers.tatanpoker09.tsm.com.eilers.tatanpoker09.tsm.database;
+package com.eilers.tatanpoker09.tsm.database;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;

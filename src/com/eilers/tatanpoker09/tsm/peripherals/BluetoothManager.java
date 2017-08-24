@@ -1,46 +1,47 @@
 package com.eilers.tatanpoker09.tsm.peripherals;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.nio.charset.Charset;
-import java.rmi.Remote;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.logging.Logger;
-
-import javax.bluetooth.BluetoothStateException;
-import javax.bluetooth.DataElement;
-import javax.bluetooth.DeviceClass;
-import javax.bluetooth.DiscoveryAgent;
-import javax.bluetooth.DiscoveryListener;
-import javax.bluetooth.LocalDevice;
-import javax.bluetooth.RemoteDevice;
-import javax.bluetooth.ServiceRecord;
-import javax.bluetooth.UUID;
-import javax.microedition.io.Connector;
-import javax.obex.ClientSession;
-import javax.obex.HeaderSet;
-import javax.obex.Operation;
-import javax.obex.ResponseCodes;
-
 import com.eilers.tatanpoker09.tsm.Manager;
 import com.eilers.tatanpoker09.tsm.server.MQTTManager;
-import com.eilers.tatanpoker09.tsm.server.ServerManager;
 import com.eilers.tatanpoker09.tsm.server.Tree;
 import com.intel.bluetooth.RemoteDeviceHelper;
 import net.sf.xenqtt.client.PublishMessage;
 import net.sf.xenqtt.message.QoS;
 
+import javax.bluetooth.*;
+import javax.microedition.io.Connector;
+import javax.obex.ClientSession;
+import javax.obex.HeaderSet;
+import javax.obex.Operation;
+import javax.obex.ResponseCodes;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.logging.Logger;
+
 public class BluetoothManager implements Callable, Manager {
-	private final ServerManager serverManager;
 	private DiscoveryAgent agent;
 	private List<RemoteDevice> foundDevices;
 	private boolean searching;
 
-	public BluetoothManager(ServerManager serverManager) {
-		this.serverManager = serverManager;
+    public BluetoothManager() {
+
 	}
+
+    public static byte[][] convertToBytes(List<RemoteDevice> devices) {
+        byte[][] data = new byte[devices.size()][];
+        for (int i = 0; i < devices.size(); i++) {
+            String string = null;
+            try {
+                string = devices.get(i).getFriendlyName(true);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            data[i] = string.getBytes();
+        }
+        return data;
+    }
 
 	public boolean setup() {
 		foundDevices = new ArrayList<RemoteDevice>();
@@ -78,19 +79,6 @@ public class BluetoothManager implements Callable, Manager {
 			}
 		}
 	}
-    public static byte[][] convertToBytes(List<RemoteDevice> devices) {
-        byte[][] data = new byte[devices.size()][];
-        for (int i = 0; i < devices.size(); i++) {
-            String string = null;
-            try {
-                string = devices.get(i).getFriendlyName(true);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            data[i] = string.getBytes();
-        }
-        return data;
-    }
 
 	public void connectDevice(RemoteDevice device) {
 		//CONNECTING BLUETOOTH WISE.
@@ -160,6 +148,33 @@ class MyDiscoveryListener implements DiscoveryListener {
 		this.lock = lock;
 	}
 
+    private static void sendMessageToDevice(String serverURL) {
+        try {
+            System.out.println("Connecting to " + serverURL);
+            ClientSession clientSession = (ClientSession) Connector.open(serverURL);
+            HeaderSet hsConnectReply = clientSession.connect(null);
+            if (hsConnectReply.getResponseCode() != ResponseCodes.OBEX_HTTP_OK) {
+                System.out.println("Failed to connect");
+                return;
+            }
+            HeaderSet hsOperation = clientSession.createHeaderSet();
+            hsOperation.setHeader(HeaderSet.NAME, "Hello.txt");
+            hsOperation.setHeader(HeaderSet.TYPE, "text");
+            //Create PUT Operation
+            Operation putOperation = clientSession.put(hsOperation);
+            // Sending the message
+            byte data[] = "Hello World !!!".getBytes("iso-8859-1");
+            OutputStream os = putOperation.openOutputStream();
+            os.write(data);
+            os.close();
+            putOperation.close();
+            clientSession.disconnect(null);
+            clientSession.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 	public void deviceDiscovered(RemoteDevice btDevice, DeviceClass deviceClass) {
 		log.info("Device " + btDevice.getBluetoothAddress() + " found");
 		try {
@@ -191,39 +206,10 @@ class MyDiscoveryListener implements DiscoveryListener {
 				System.out.println("service found " + url);
 			}
 			if(serviceName.getValue().equals("OBEX Object Push")){
-				sendMessageToDevice(url);               
-			}
-		}    		 	        
-	}
-
-
-	private static void sendMessageToDevice(String serverURL){
-		try{
-			System.out.println("Connecting to " + serverURL);
-			ClientSession clientSession = (ClientSession) Connector.open(serverURL);
-			HeaderSet hsConnectReply = clientSession.connect(null);
-			if (hsConnectReply.getResponseCode() != ResponseCodes.OBEX_HTTP_OK) {
-				System.out.println("Failed to connect");
-				return;
-			}
-			HeaderSet hsOperation = clientSession.createHeaderSet();
-			hsOperation.setHeader(HeaderSet.NAME, "Hello.txt");
-			hsOperation.setHeader(HeaderSet.TYPE, "text");
-			//Create PUT Operation
-			Operation putOperation = clientSession.put(hsOperation);
-			// Sending the message
-			byte data[] = "Hello World !!!".getBytes("iso-8859-1");
-			OutputStream os = putOperation.openOutputStream();
-			os.write(data);
-			os.close();
-			putOperation.close();
-			clientSession.disconnect(null);
-			clientSession.close();
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+                sendMessageToDevice(url);
+            }
+        }
+    }
 
 	public void serviceSearchCompleted(int arg0, int arg1) { 
 		synchronized (lock) {

@@ -1,14 +1,12 @@
 package com.eilers.tatanpoker09.tsm.peripherals;
 
-import java.io.DataOutputStream;
-import java.io.IOException;
+import com.eilers.tatanpoker09.tsm.server.Tree;
+import com.intel.bluetooth.MicroeditionConnector;
 
 import javax.bluetooth.RemoteDevice;
 import javax.microedition.io.StreamConnection;
-
-import com.eilers.tatanpoker09.tsm.server.Tree;
-import com.intel.bluetooth.MicroeditionConnector;
-import com.sun.org.apache.xpath.internal.SourceTree;
+import java.io.DataOutputStream;
+import java.io.IOException;
 
 public class Peripheral extends Thread{
     private String type;
@@ -22,6 +20,21 @@ public class Peripheral extends Thread{
         this.type = type;
     }
 
+    public static Peripheral getByName(String type, String name) {
+        Peripheral p = new Peripheral(type);
+        for (RemoteDevice device : Tree.getServer().getpManager().getBtManager().getFoundDevices()) {
+            try {
+                if (device.getFriendlyName(true).equals(name)) {
+                    p.registerBtDevice(device);
+                    break;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return p;
+    }
+
     public void registerBtDevice(RemoteDevice device){
         this.btDevice = device;
     }
@@ -30,10 +43,10 @@ public class Peripheral extends Thread{
         return btDevice;
     }
 
-	public String getServerURL() {
+    public String getServerURL() {
 		return "btspp://"+btDevice.getBluetoothAddress()+":1;authenticate=false;encrypt=false;master=false";
 	}
-	
+
 	public void openStream(String serverURL) {
         if(this.os==null) {
             StreamConnection sc;
@@ -70,16 +83,16 @@ public class Peripheral extends Thread{
             System.out.println("Stream is closed!");
         }
 	}
-	public void openStream() {
+
+    public void openStream() {
 		openStream(getServerURL());
 	}
 	
 	public boolean isConnected() {
 		return os!=null;
 	}
-	
-	
-	public void send(String info) {
+
+    public void send(String info) {
 	    if(this.os==null){
             try {
                 this.os = streamConnection.openDataOutputStream();
@@ -94,21 +107,4 @@ public class Peripheral extends Thread{
 			e.printStackTrace();
 		}
 	}
-
-    public static Peripheral getByName(String type, String name) {
-	    Peripheral p = new Peripheral(type);
-	    for(RemoteDevice device : Tree.getServer().getbManager().getFoundDevices()){
-            try {
-                System.out.println(device.getFriendlyName(true)+","+name);
-                if(device.getFriendlyName(true).equals(name)) {
-                    System.out.println(3);
-                    p.registerBtDevice(device);
-                    break;
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return p;
-    }
 }

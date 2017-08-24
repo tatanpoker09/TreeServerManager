@@ -37,8 +37,11 @@ public class Tree {
 		ServerManager serverManager = new ServerManager(PROGRAM_NAME, MAXIMUM_CONNECTIONS);
 		Tree.server = serverManager;
 		getLog().info("Server Started.");
-		serverManager.setup();
-	}
+        if (!serverManager.setup()) {
+            log.severe("An error ocurred while loading up the server. Check your log.");
+            System.exit(0);
+        }
+    }
 
 	/**
 	 * Starts up the logging and sets it to a global variable.

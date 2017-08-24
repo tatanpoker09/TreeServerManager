@@ -7,11 +7,10 @@ import com.eilers.tatanpoker09.tsm.commandmanagement.SubCommand;
 import com.eilers.tatanpoker09.tsm.peripherals.Peripheral;
 
 public class LightsCommand extends BaseCommand {
-	private static final String TOPIC = "modules/lights";
-	
-	public LightsCommand() {
+    private static final String TOPIC = "server/modules/lights";
+
+    public LightsCommand() {
 		super(TOPIC);
-		setup();
 	}
 
     public void defaultTrigger(String topic, String[] args) {
@@ -34,6 +33,6 @@ public class LightsCommand extends BaseCommand {
             }
         };
         SubCommand createSc = new SubCommand("create", createTrigger);
-		addSubCommand(createSc);
-	}
+        addSubCommand(createSc);
+    }
 }
