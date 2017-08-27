@@ -105,11 +105,7 @@ public class Peripheral extends Thread{
 
     public void send(String info) {
 	    if(this.os==null){
-            try {
-                this.os = streamConnection.openDataOutputStream();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            openStream();
         }
 		try {
 			os.write(info.getBytes());

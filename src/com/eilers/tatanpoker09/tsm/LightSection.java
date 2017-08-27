@@ -21,6 +21,7 @@ public class LightSection {
     private Peripheral peripheral;
     private String name;
     private int permissionLevel;
+    private boolean connected;
 
     public LightSection(String name){
         this.name = name;
@@ -42,7 +43,7 @@ public class LightSection {
 
     public static void setupDatabase() {
         DatabaseManager dm = Tree.getServer().getdManager();
-        dm.executeCommand("CREATE TABLE IF NOT EXISTS `tree`.`LightSections` ( `id` INT NOT NULL AUTO_INCREMENT , `name` VARCHAR(40) NOT NULL , `device_id` VARCHAR(36) NOT NULL , `device_name` VARCHAR(40) NOT NULL , `permission_level` INT(32) NOT NULL,PRIMARY KEY (`id`)) ENGINE = InnoDB;");
+        dm.executeCommand("CREATE TABLE IF NOT EXISTS `Tree`.`LightSections` ( `id` INT NOT NULL AUTO_INCREMENT , `name` VARCHAR(40) NOT NULL , `device_id` VARCHAR(36) NOT NULL , `device_name` VARCHAR(40) NOT NULL , `permission_level` INT(32) NOT NULL,PRIMARY KEY (`id`)) ENGINE = InnoDB;");
         loadFromDatabase();
     }
 
@@ -50,7 +51,7 @@ public class LightSection {
         Logger log = Tree.getLog();
 
         DatabaseManager dm = Tree.getServer().getdManager();
-        ResultSet rs = dm.getFromDatabase("SELECT * FROM `tree`.`LightSections`");
+        ResultSet rs = dm.getFromDatabase("SELECT * FROM `Tree`.`LightSections`");
 
         if (rs == null) {
             log.severe("There was an error loading up LightSections from the Database!");
@@ -63,41 +64,56 @@ public class LightSection {
                 int permissionLevel = rs.getInt("permission_level");
 
                 LightSection ls = new LightSection(name, peripheral, permissionLevel);
-                ls.register();
+                ls.localRegister();
+                ls.attemptConnect();
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public void turn(boolean on){
-        peripheral.openStream();
+    public boolean attemptConnect() {
+        Tree.getLog().info("Attempting to connect via bluetooth.");
+        try {
+            peripheral.openStream();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public void turn(boolean on) {
         if(on) {
-        	peripheral.send("PrenderLED");
+            peripheral.send("PrenderLED");
         } else {
         	peripheral.send("ApagarLED");
         }
-        peripheral.closeStream();
     }
 
-    public void register() {
+    public void localRegister() {
         Logger log = Tree.getLog();
         if(lights==null){
             lights = new ArrayList<LightSection>();
         }
         lights.add(this);
-        MQTTManager.getClient().subscribe(new Subscription[]{new Subscription("module/lights/"+this.name, QoS.AT_LEAST_ONCE)});
+        Tree.getServer().getpManager().addPeripheral(getPeripheral());
+        MQTTManager.getClient().subscribe(new Subscription[]{new Subscription("server/modules/lights/" + this.name, QoS.AT_LEAST_ONCE)});
+        log.info("Lights registered locally!");
+    }
 
+    public void databaseRegister() {
+        Logger log = Tree.getLog();
         DatabaseManager dm = Tree.getServer().getdManager();
-        PreparedStatement ps = dm.prepareStatement("INSERT INTO `tree`.`LightSections` (name, device_id, device_name, permission_level) VALUES (?,?,?,?)");
+        PreparedStatement ps = dm.prepareStatement("INSERT INTO `Tree`.`LightSections` (name, device_id, device_name, permission_level) VALUES (?,?,?,?)");
         if (ps != null) {
             try {
-                ps.setString(0, this.name);
-                ps.setString(1, peripheral.getBtDevice().getBluetoothAddress());
-                ps.setString(2, peripheral.getBtDevice().getFriendlyName(true));
-                ps.setInt(3, permissionLevel);
+                ps.setString(1, this.name);
+                ps.setString(2, peripheral.getBtDevice().getBluetoothAddress());
+                ps.setString(3, peripheral.getBtDevice().getFriendlyName(true));
+                ps.setInt(4, permissionLevel);
                 ps.executeUpdate();
-                log.info("Added lightsection succesfully");
+                log.info("Added lightsection to the database succesfully");
                 return;
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -111,5 +127,10 @@ public class LightSection {
     }
     public Peripheral getPeripheral() {
         return peripheral;
+    }
+
+    public void register() {
+        localRegister();
+        databaseRegister();
     }
 }

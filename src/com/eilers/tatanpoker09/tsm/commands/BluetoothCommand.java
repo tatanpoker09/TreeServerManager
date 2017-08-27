@@ -4,10 +4,7 @@ import com.eilers.tatanpoker09.tsm.commandmanagement.BaseCommand;
 import com.eilers.tatanpoker09.tsm.commandmanagement.CommandTrigger;
 import com.eilers.tatanpoker09.tsm.commandmanagement.SubCommand;
 import com.eilers.tatanpoker09.tsm.peripherals.BluetoothManager;
-import com.eilers.tatanpoker09.tsm.server.MQTTManager;
 import com.eilers.tatanpoker09.tsm.server.Tree;
-import net.sf.xenqtt.client.PublishMessage;
-import net.sf.xenqtt.message.QoS;
 
 public class BluetoothCommand extends BaseCommand {
     private static final String TOPIC = "server/peripheral/bluetooth";
@@ -23,6 +20,7 @@ public class BluetoothCommand extends BaseCommand {
             public void call(String topic, String[] info) {
                 BluetoothManager bm = Tree.getServer().getpManager().getBtManager();
                 bm.discoverDevices();
+                bm.publishDevices();
             }
         };
         SubCommand searchCmd = new SubCommand("search", searchTrigger);
@@ -30,10 +28,8 @@ public class BluetoothCommand extends BaseCommand {
         CommandTrigger retrieveTrigger = new CommandTrigger() {
             @Override
             public void call(String topic, String[] args) {
-                byte[][] deviceBytes = BluetoothManager.convertToBytes(Tree.getServer().getpManager().getBtManager().getFoundDevices());
-                for(byte[] array : deviceBytes) {
-                    MQTTManager.getClient().publish(new PublishMessage("manager/bluetooth/devices", QoS.AT_LEAST_ONCE, array));
-                }
+                BluetoothManager bm = Tree.getServer().getpManager().getBtManager();
+                bm.publishDevices();
             }
         };
         SubCommand retrieveCmd = new SubCommand("retrieve", retrieveTrigger);

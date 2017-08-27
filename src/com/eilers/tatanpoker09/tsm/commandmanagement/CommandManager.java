@@ -61,9 +61,9 @@ public class CommandManager implements Callable, Manager {
 	public boolean parseAndRun(String topic, String payload){
 		System.out.println(topic+","+payload+" getting parsed");
 		for(Command c : commands){
-		    if(c.isTopic(topic)){
-		        String[] args = payload.split(",");
-		        if(!c.onTrigger(topic, args)){
+            if (c.isTopic(topic)) {
+                String[] args = payload.split(",");
+                if(!c.onTrigger(topic, args)){
 		            c.defaultTrigger(topic, args);
                 }
 		        break;

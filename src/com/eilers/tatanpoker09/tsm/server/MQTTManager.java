@@ -10,6 +10,7 @@ import net.sf.xenqtt.message.QoS;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.Callable;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Logger;
@@ -17,7 +18,7 @@ import java.util.logging.Logger;
 /**
  * Builds music catalogs from years gone by.
  */
-public class MQTTManager implements Manager {
+public class MQTTManager implements Manager, Callable {
 
     private static final Logger log = Tree.getLog();
     private static AsyncMqttClient client;
@@ -86,7 +87,7 @@ public class MQTTManager implements Manager {
             System.out.println(Tree.getServer().getcManager().getCommands());
             for (Command c : Tree.getServer().getcManager().getCommands()) {
                 String topic = c.getTopic();
-                subscriptions.add(new Subscription(topic, QoS.AT_LEAST_ONCE));
+                subscriptions.add(new Subscription(topic + "/#", QoS.AT_LEAST_ONCE));
             }
             getClient().subscribe(subscriptions);
             while (!getClient().isClosed()) {
@@ -103,8 +104,17 @@ public class MQTTManager implements Manager {
         return true;
     }
 
+    public boolean isConnected() {
+        return !client.isClosed();
+    }
+
     @Override
     public void postSetup() {
 
+    }
+
+    @Override
+    public Object call() throws Exception {
+        return setup();
     }
 }

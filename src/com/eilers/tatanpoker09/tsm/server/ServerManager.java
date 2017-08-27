@@ -3,6 +3,7 @@ package com.eilers.tatanpoker09.tsm.server;
 import com.eilers.tatanpoker09.tsm.Manager;
 import com.eilers.tatanpoker09.tsm.commandmanagement.CommandManager;
 import com.eilers.tatanpoker09.tsm.database.DatabaseManager;
+import com.eilers.tatanpoker09.tsm.peripherals.Peripheral;
 import com.eilers.tatanpoker09.tsm.peripherals.PeripheralManager;
 import com.eilers.tatanpoker09.tsm.plugins.PluginManager;
 
@@ -28,6 +29,7 @@ public class ServerManager implements Manager {
 	private PeripheralManager pManager;
     private DatabaseManager dManager;
     private PluginManager pluginManager;
+    private MQTTManager mqttManager;
 
 	public ServerManager(String serverName, int maximumConnections) {
 		this.serverName = serverName;
@@ -39,6 +41,8 @@ public class ServerManager implements Manager {
 	 * Loads all managers
 	 */
     public boolean setup() {
+        Runtime.getRuntime().addShutdownHook(new Thread(new ShutdownManager()));
+
         Logger log = Tree.getLog();
 		List<Future> setupTasks = new ArrayList<Future>();
 		log.info("Setting up server: "+serverName);
@@ -60,6 +64,10 @@ public class ServerManager implements Manager {
         setupTasks.add(future);
         this.dManager = dManager;
 
+        MQTTManager mqttManager = new MQTTManager();
+        threadpool.submit(mqttManager);
+        this.mqttManager = mqttManager;
+
         if (!dManager.setup()) {
             //We couldn't connect to the database
             log.severe("Couldn't connect to the MySQL server! Check to start it up.");
@@ -71,8 +79,8 @@ public class ServerManager implements Manager {
 			done = true;
 			for(Future f : setupTasks){
 				if(!f.isDone()){
-					done =false;
-					break;
+                    done = false;
+                    break;
 				}
 			}
 			try {
@@ -94,18 +102,18 @@ public class ServerManager implements Manager {
     public void postSetup() {
         Logger log = Tree.getLog();
 
-		MQTTManager mqttManager = new MQTTManager();
-        if (!mqttManager.setup()) {
+        if (!mqttManager.isConnected()) {
             log.info("Check your MQTT Broker!");
             System.exit(0);
             return;
         }
+
         cManager.postSetup();
         dManager.postSetup();
 
-
         PluginManager pluginManager = new PluginManager();
         this.pluginManager = pluginManager;
+        log.info("Post setup has been completed");
     }
 	
 	/**
@@ -146,5 +154,19 @@ public class ServerManager implements Manager {
 
     public DatabaseManager getdManager() {
         return dManager;
+    }
+}
+
+class ShutdownManager implements Runnable {
+
+    @Override
+    public void run() {
+        Logger log = Tree.getLog();
+        log.info("Running shutdown manager...");
+        log.info("Closing bluetooth streams.");
+        for (Peripheral p : Tree.getServer().getpManager().getPeripherals()) {
+            p.closeStream();
+        }
+
     }
 }

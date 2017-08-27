@@ -72,10 +72,6 @@ public class BluetoothManager implements Callable, Manager {
 					e.printStackTrace();
 				}
 				System.out.println(foundDevices.size() + " device(s) found");
-				byte[][] deviceBytes = convertToBytes(foundDevices);
-				for(byte[] array : deviceBytes) {
-					MQTTManager.getClient().publish(new PublishMessage("manager/bluetooth/devices", QoS.AT_LEAST_ONCE, array));
-				}
 			}
 		}
 	}
@@ -135,6 +131,13 @@ public class BluetoothManager implements Callable, Manager {
 	public void setSearching(boolean searching) {
 		this.searching = searching;
 	}
+
+    public void publishDevices() {
+        byte[][] deviceBytes = convertToBytes(foundDevices);
+        for (byte[] array : deviceBytes) {
+            MQTTManager.getClient().publish(new PublishMessage("server/peripheral/bluetooth/devices", QoS.AT_LEAST_ONCE, array));
+        }
+    }
 }
 
 

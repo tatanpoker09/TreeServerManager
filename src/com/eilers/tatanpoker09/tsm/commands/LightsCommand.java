@@ -28,8 +28,9 @@ public class LightsCommand extends BaseCommand {
             @Override
             public void call(String topic, String[] info) {
                 Peripheral p = Peripheral.getByName("Lights", info[1]);
-                LightSection ls = new LightSection(info[0], p);
+                LightSection ls = new LightSection(info[0], p, Integer.parseInt(info[2]));
                 ls.register();
+                ls.attemptConnect();
             }
         };
         SubCommand createSc = new SubCommand("create", createTrigger);
