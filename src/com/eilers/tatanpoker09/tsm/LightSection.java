@@ -4,6 +4,7 @@ import com.eilers.tatanpoker09.tsm.database.DatabaseManager;
 import com.eilers.tatanpoker09.tsm.peripherals.Peripheral;
 import com.eilers.tatanpoker09.tsm.server.MQTTManager;
 import com.eilers.tatanpoker09.tsm.server.Tree;
+import net.sf.xenqtt.client.PublishMessage;
 import net.sf.xenqtt.client.Subscription;
 import net.sf.xenqtt.message.QoS;
 
@@ -72,6 +73,17 @@ public class LightSection {
         }
     }
 
+    public static List<LightSection> getLightSections() {
+        return lights;
+    }
+
+    public static void publishLights() {
+        for (LightSection lights : lights) {
+            String payload = lights.name + "," + lights.permissionLevel;
+            MQTTManager.getClient().publish(new PublishMessage("server/modules/lights/retrieve_callback", QoS.AT_LEAST_ONCE, payload));
+        }
+    }
+
     public boolean attemptConnect() {
         Tree.getLog().info("Attempting to connect via bluetooth.");
         try {
@@ -125,6 +137,7 @@ public class LightSection {
             log.severe("There was an error creating the SQL syntax to insert the LightSection.");
         }
     }
+
     public Peripheral getPeripheral() {
         return peripheral;
     }

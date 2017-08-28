@@ -35,5 +35,12 @@ public class LightsCommand extends BaseCommand {
         };
         SubCommand createSc = new SubCommand("create", createTrigger);
         addSubCommand(createSc);
+
+        CommandTrigger retrieveTrigger = new CommandTrigger() {
+            @Override
+            public void call(String topic, String[] args) {
+                LightSection.publishLights();
+            }
+        };
     }
 }
