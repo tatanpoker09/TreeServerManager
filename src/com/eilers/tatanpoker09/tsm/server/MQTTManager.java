@@ -1,8 +1,9 @@
 package com.eilers.tatanpoker09.tsm.server;
 
 import com.eilers.tatanpoker09.tsm.Manager;
-import com.eilers.tatanpoker09.tsm.commandmanagement.Command;
+import com.eilers.tatanpoker09.tsm.commandmanagement.BaseCommand;
 import com.eilers.tatanpoker09.tsm.commandmanagement.CommandManager;
+import com.eilers.tatanpoker09.tsm.commandmanagement.SubCommand;
 import net.sf.xenqtt.client.*;
 import net.sf.xenqtt.message.ConnectReturnCode;
 import net.sf.xenqtt.message.QoS;
@@ -85,9 +86,12 @@ public class MQTTManager implements Manager, Callable {
             // Create your subscriptions. In this case we want to build up a catalog of classic rock.
             List<Subscription> subscriptions = new ArrayList<>();
             System.out.println(Tree.getServer().getcManager().getCommands());
-            for (Command c : Tree.getServer().getcManager().getCommands()) {
+            for (BaseCommand c : Tree.getServer().getcManager().getCommands()) {
                 String topic = c.getTopic();
-                subscriptions.add(new Subscription(topic + "/#", QoS.AT_LEAST_ONCE));
+                subscriptions.add(new Subscription(topic, QoS.AT_LEAST_ONCE));
+                for (SubCommand sc : c.getSubCommands()) {
+                    subscriptions.add(new Subscription(topic + "/" + sc.getName(), QoS.AT_LEAST_ONCE));
+                }
             }
             getClient().subscribe(subscriptions);
             while (!getClient().isClosed()) {

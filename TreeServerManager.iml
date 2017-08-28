@@ -12,7 +12,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$USER_HOME$/Desktop/TreeHomeManager/xenqtt.jar!/" />
+          <root url="jar://$USER_HOME$/Desktop/Tree/TreeHomeManager/xenqtt.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

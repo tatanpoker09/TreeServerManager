@@ -1,5 +1,6 @@
 package com.eilers.tatanpoker09.tsm.server;
 
+import com.eilers.tatanpoker09.tsm.LightSection;
 import com.eilers.tatanpoker09.tsm.Manager;
 import com.eilers.tatanpoker09.tsm.commandmanagement.CommandManager;
 import com.eilers.tatanpoker09.tsm.database.DatabaseManager;
@@ -8,6 +9,8 @@ import com.eilers.tatanpoker09.tsm.peripherals.PeripheralManager;
 import com.eilers.tatanpoker09.tsm.plugins.PluginManager;
 
 import java.io.IOException;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -166,6 +169,17 @@ class ShutdownManager implements Runnable {
         log.info("Closing bluetooth streams.");
         for (Peripheral p : Tree.getServer().getpManager().getPeripherals()) {
             p.closeStream();
+        }
+        log.info("Registering lightsection statuses...");
+        DatabaseManager dm = Tree.getServer().getdManager();
+        for (LightSection ls : LightSection.getLightSections()) {
+            PreparedStatement ps = dm.prepareStatement("UPDATE `Tree`.`LightSections` SET status=?");
+            try {
+                ps.setBoolean(1, ls.isOn());
+                ps.executeUpdate();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
 
     }

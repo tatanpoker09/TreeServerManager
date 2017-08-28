@@ -1,14 +1,10 @@
 package com.eilers.tatanpoker09.tsm.commandmanagement;
 
-import java.net.InetAddress; 
+import com.eilers.tatanpoker09.tsm.server.Tree;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
-
-import com.eilers.tatanpoker09.tsm.server.Tree;
-import com.eilers.tatanpoker09.tsm.commandmanagement.Command;
-
-import javax.print.DocFlavor;
 
 /**
  * Represents a command. Cannot be instantiated as it doesn't represent any specific command. Commands must extend this class.
@@ -71,7 +67,7 @@ public abstract class BaseCommand implements Command{
     }
 
     public boolean isTopic(String topic) {
-	    return topic.contains(this.topic.toLowerCase());
+        return topic.contains(this.topic.toLowerCase());
     }
 
         /**

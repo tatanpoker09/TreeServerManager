@@ -15,9 +15,9 @@ import java.util.concurrent.Callable;
  *
  */
 public class CommandManager implements Callable, Manager {
-	private List<Command> commands;
-	
-	public CommandManager() {
+    private List<BaseCommand> commands;
+
+    public CommandManager() {
 	    setup();
 	}
 
@@ -33,7 +33,7 @@ public class CommandManager implements Callable, Manager {
 	 * Loads all commands and stores them in the "commands" List.
 	 */
 	public boolean setup() {
-		commands = new ArrayList<Command>();
+        commands = new ArrayList<BaseCommand>();
         loadCommands();
         return true;
 	}
@@ -41,12 +41,12 @@ public class CommandManager implements Callable, Manager {
 	public void postSetup() {
 	}
 
-	public List<Command> getCommands() {
-		return commands;
+    public List<BaseCommand> getCommands() {
+        return commands;
 	}
 
-	public void addCommand(Command command) {
-		this.commands.add(command);
+    public void addCommand(BaseCommand command) {
+        this.commands.add(command);
 	}
 
 	public Boolean call() throws Exception {

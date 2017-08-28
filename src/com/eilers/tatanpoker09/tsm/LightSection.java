@@ -23,6 +23,8 @@ public class LightSection {
     private String name;
     private int permissionLevel;
     private boolean connected;
+    private boolean on;
+
 
     public LightSection(String name){
         this.name = name;
@@ -66,7 +68,7 @@ public class LightSection {
 
                 LightSection ls = new LightSection(name, peripheral, permissionLevel);
                 ls.localRegister();
-                ls.attemptConnect();
+                ls.connected = ls.attemptConnect();
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -79,7 +81,17 @@ public class LightSection {
 
     public static void publishLights() {
         for (LightSection lights : lights) {
-            String payload = lights.name + "," + lights.permissionLevel;
+            String status;
+            if (lights.connected) {
+                if (lights.isOn()) {
+                    status = "On";
+                } else {
+                    status = "Off";
+                }
+            } else {
+                status = "Disconnected";
+            }
+            String payload = lights.name + "," + lights.permissionLevel + "," + status;
             MQTTManager.getClient().publish(new PublishMessage("server/modules/lights/retrieve_callback", QoS.AT_LEAST_ONCE, payload));
         }
     }
@@ -96,6 +108,7 @@ public class LightSection {
     }
 
     public void turn(boolean on) {
+        this.on = on;
         if(on) {
             peripheral.send("PrenderLED");
         } else {
@@ -145,5 +158,9 @@ public class LightSection {
     public void register() {
         localRegister();
         databaseRegister();
+    }
+
+    public boolean isOn() {
+        return on;
     }
 }
