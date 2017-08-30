@@ -12,7 +12,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$USER_HOME$/Desktop/Tree/TreeHomeManager/xenqtt.jar!/" />
+          <root url="jar://$USER_HOME$/Desktop/TreeHomeManager/xenqtt.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -22,5 +22,14 @@
     <orderEntry type="library" scope="RUNTIME" name="Maven: net.sf.bluecove:bluecove-gpl:2.1.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: net.sf.bluecove:bluecove-emu:2.1.0" level="project" />
     <orderEntry type="library" name="Maven: mysql:mysql-connector-java:5.1.39" level="project" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$USER_HOME$/Desktop/Tree Workshop/dependencies/yamlbeans-1.06/yamlbeans-1.06.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
   </component>
 </module>

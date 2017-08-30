@@ -1,6 +1,5 @@
 package com.eilers.tatanpoker09.tsm.database;
 
-import com.eilers.tatanpoker09.tsm.LightSection;
 import com.eilers.tatanpoker09.tsm.Manager;
 import com.eilers.tatanpoker09.tsm.server.Tree;
 
@@ -52,7 +51,7 @@ public class DatabaseManager implements Manager, Callable {
 
     @Override
     public void postSetup() {
-        LightSection.setupDatabase();
+
     }
 
     @Override

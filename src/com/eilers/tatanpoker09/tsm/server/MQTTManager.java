@@ -11,7 +11,6 @@ import net.sf.xenqtt.message.QoS;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.Callable;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Logger;
@@ -19,13 +18,28 @@ import java.util.logging.Logger;
 /**
  * Builds music catalogs from years gone by.
  */
-public class MQTTManager implements Manager, Callable {
+public class MQTTManager extends Thread implements Manager {
 
     private static final Logger log = Tree.getLog();
     private static AsyncMqttClient client;
 
     public static AsyncMqttClient getClient() {
         return client;
+    }
+
+    public static void publish(String topic, String payload) {
+        PublishMessage pm = new PublishMessage("server/modules/lights/retrieve_callback", QoS.AT_LEAST_ONCE, payload);
+        client.publish(pm);
+    }
+
+    public static void subscribe(String[] topics) {
+        Subscription[] subscription = new Subscription[topics.length];
+        int x = 0;
+        for (String topic : topics) {
+            subscription[x] = new Subscription(topic, QoS.AT_LEAST_ONCE);
+            x++;
+        }
+        client.subscribe(subscription);
     }
 
     @Override
@@ -85,7 +99,6 @@ public class MQTTManager implements Manager, Callable {
             }
             // Create your subscriptions. In this case we want to build up a catalog of classic rock.
             List<Subscription> subscriptions = new ArrayList<>();
-            System.out.println(Tree.getServer().getcManager().getCommands());
             for (BaseCommand c : Tree.getServer().getcManager().getCommands()) {
                 String topic = c.getTopic();
                 subscriptions.add(new Subscription(topic, QoS.AT_LEAST_ONCE));
@@ -118,7 +131,7 @@ public class MQTTManager implements Manager, Callable {
     }
 
     @Override
-    public Object call() throws Exception {
-        return setup();
+    public void run() {
+        setup();
     }
 }

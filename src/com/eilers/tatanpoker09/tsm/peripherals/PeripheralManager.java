@@ -55,4 +55,12 @@ public class PeripheralManager implements Callable,Manager{
     public BluetoothManager getBtManager() {
         return btManager;
     }
+
+    public String getBluetoothAddress(Peripheral peripheral) {
+        return btManager.getBluetoothAddress(peripheral.getBtDevice());
+    }
+
+    public String getFriendlyName(Peripheral peripheral, boolean b) {
+        return btManager.getFriendlyName(peripheral.getBtDevice(), b);
+    }
 }

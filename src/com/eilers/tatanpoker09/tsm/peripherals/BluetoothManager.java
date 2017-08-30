@@ -138,6 +138,19 @@ public class BluetoothManager implements Callable, Manager {
             MQTTManager.getClient().publish(new PublishMessage("server/peripheral/bluetooth/devices", QoS.AT_LEAST_ONCE, array));
         }
     }
+
+    public String getBluetoothAddress(RemoteDevice rd) {
+        return rd.getBluetoothAddress();
+    }
+
+    public String getFriendlyName(RemoteDevice btDevice, boolean alwaysAsk) {
+        try {
+            return btDevice.getFriendlyName(alwaysAsk);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }
 
 

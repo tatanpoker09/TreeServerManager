@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="LightSectionModule:jar">
+    <output-path>$PROJECT_DIR$/classes/artifacts/LightSectionModule_jar</output-path>
+    <root id="archive" name="LightSectionModule.jar">
+      <element id="module-output" name="LightSectionModule" />
+      <element id="module-output" name="TreeServerManager" />
+    </root>
+  </artifact>
+</component>

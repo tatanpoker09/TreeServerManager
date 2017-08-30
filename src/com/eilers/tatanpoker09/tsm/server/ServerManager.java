@@ -1,16 +1,14 @@
 package com.eilers.tatanpoker09.tsm.server;
 
-import com.eilers.tatanpoker09.tsm.LightSection;
 import com.eilers.tatanpoker09.tsm.Manager;
 import com.eilers.tatanpoker09.tsm.commandmanagement.CommandManager;
 import com.eilers.tatanpoker09.tsm.database.DatabaseManager;
 import com.eilers.tatanpoker09.tsm.peripherals.Peripheral;
 import com.eilers.tatanpoker09.tsm.peripherals.PeripheralManager;
 import com.eilers.tatanpoker09.tsm.plugins.PluginManager;
+import com.eilers.tatanpoker09.tsm.plugins.TreePlugin;
 
 import java.io.IOException;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -67,10 +65,6 @@ public class ServerManager implements Manager {
         setupTasks.add(future);
         this.dManager = dManager;
 
-        MQTTManager mqttManager = new MQTTManager();
-        threadpool.submit(mqttManager);
-        this.mqttManager = mqttManager;
-
         if (!dManager.setup()) {
             //We couldn't connect to the database
             log.severe("Couldn't connect to the MySQL server! Check to start it up.");
@@ -104,9 +98,16 @@ public class ServerManager implements Manager {
 	 */
     public void postSetup() {
         Logger log = Tree.getLog();
-
-        if (!mqttManager.isConnected()) {
-            log.info("Check your MQTT Broker!");
+		MQTTManager mqttManager = new MQTTManager();
+		mqttManager.start();
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		log.info("wow");
+		if (!mqttManager.isConnected()) {
+			log.info("Check your MQTT Broker!");
             System.exit(0);
             return;
         }
@@ -158,6 +159,10 @@ public class ServerManager implements Manager {
     public DatabaseManager getdManager() {
         return dManager;
     }
+
+	public PluginManager getPluginManager() {
+		return pluginManager;
+	}
 }
 
 class ShutdownManager implements Runnable {
@@ -170,17 +175,10 @@ class ShutdownManager implements Runnable {
         for (Peripheral p : Tree.getServer().getpManager().getPeripherals()) {
             p.closeStream();
         }
-        log.info("Registering lightsection statuses...");
-        DatabaseManager dm = Tree.getServer().getdManager();
-        for (LightSection ls : LightSection.getLightSections()) {
-            PreparedStatement ps = dm.prepareStatement("UPDATE `Tree`.`LightSections` SET status=?");
-            try {
-                ps.setBoolean(1, ls.isOn());
-                ps.executeUpdate();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
+		log.info("Shutting down individual plugins...");
+		for (TreePlugin plugin : Tree.getServer().getPluginManager().getPlugins()) {
+			Tree.getServer().getPluginManager().unloadPlugin(plugin);
+		}
 
     }
 }

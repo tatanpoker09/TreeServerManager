@@ -1,5 +1,7 @@
 package com.eilers.tatanpoker09.tsm.server;
 
+import com.eilers.tatanpoker09.tsm.commandmanagement.CommandManager;
+
 import java.util.logging.Logger;
 
 
@@ -59,4 +61,8 @@ public class Tree {
 	public static ServerManager getServer() {
 		return server;
 	}
+
+    public static CommandManager getCommandManager() {
+        return server.getcManager();
+    }
 }

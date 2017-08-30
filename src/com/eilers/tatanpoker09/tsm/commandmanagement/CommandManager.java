@@ -2,7 +2,6 @@ package com.eilers.tatanpoker09.tsm.commandmanagement;
 
 import com.eilers.tatanpoker09.tsm.Manager;
 import com.eilers.tatanpoker09.tsm.commands.BluetoothCommand;
-import com.eilers.tatanpoker09.tsm.commands.LightsCommand;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,15 +14,13 @@ import java.util.concurrent.Callable;
  *
  */
 public class CommandManager implements Callable, Manager {
-    private List<BaseCommand> commands;
+	private List<BaseCommand> commands;
 
-    public CommandManager() {
-	    setup();
+	public CommandManager() {
+		setup();
 	}
 
     private void loadCommands() {
-        LightsCommand lights = new LightsCommand();
-        commands.add(lights);
         BluetoothCommand bluetooth = new BluetoothCommand();
         commands.add(bluetooth);
     }
@@ -33,20 +30,20 @@ public class CommandManager implements Callable, Manager {
 	 * Loads all commands and stores them in the "commands" List.
 	 */
 	public boolean setup() {
-        commands = new ArrayList<BaseCommand>();
-        loadCommands();
+		commands = new ArrayList<BaseCommand>();
+		loadCommands();
         return true;
 	}
 	
 	public void postSetup() {
 	}
 
-    public List<BaseCommand> getCommands() {
-        return commands;
+	public List<BaseCommand> getCommands() {
+		return commands;
 	}
 
-    public void addCommand(BaseCommand command) {
-        this.commands.add(command);
+	public void registerCommand(BaseCommand command) {
+		this.commands.add(command);
 	}
 
 	public Boolean call() throws Exception {
