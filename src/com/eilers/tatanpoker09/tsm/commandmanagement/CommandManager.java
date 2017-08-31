@@ -2,6 +2,10 @@ package com.eilers.tatanpoker09.tsm.commandmanagement;
 
 import com.eilers.tatanpoker09.tsm.Manager;
 import com.eilers.tatanpoker09.tsm.commands.BluetoothCommand;
+import com.eilers.tatanpoker09.tsm.server.MQTTManager;
+import com.eilers.tatanpoker09.tsm.server.Tree;
+import net.sf.xenqtt.client.Subscription;
+import net.sf.xenqtt.message.QoS;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,8 +26,8 @@ public class CommandManager implements Callable, Manager {
 
     private void loadCommands() {
         BluetoothCommand bluetooth = new BluetoothCommand();
-        commands.add(bluetooth);
-    }
+		registerCommand(bluetooth);
+	}
 
 
     /**
@@ -36,6 +40,15 @@ public class CommandManager implements Callable, Manager {
 	}
 	
 	public void postSetup() {
+		List<Subscription> subscriptions = new ArrayList<>();
+		for (BaseCommand c : Tree.getServer().getcManager().getCommands()) {
+			String topic = c.getTopic();
+			subscriptions.add(new Subscription(topic, QoS.AT_LEAST_ONCE));
+			for (SubCommand sc : c.getSubCommands()) {
+				subscriptions.add(new Subscription(topic + "/" + sc.getName(), QoS.AT_LEAST_ONCE));
+			}
+		}
+		MQTTManager.getClient().subscribe(subscriptions);
 	}
 
 	public List<BaseCommand> getCommands() {
@@ -44,6 +57,8 @@ public class CommandManager implements Callable, Manager {
 
 	public void registerCommand(BaseCommand command) {
 		this.commands.add(command);
+
+
 	}
 
 	public Boolean call() throws Exception {

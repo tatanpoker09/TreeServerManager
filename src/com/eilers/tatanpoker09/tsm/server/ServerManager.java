@@ -105,19 +105,19 @@ public class ServerManager implements Manager {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		log.info("wow");
 		if (!mqttManager.isConnected()) {
 			log.info("Check your MQTT Broker!");
             System.exit(0);
             return;
         }
 
-        cManager.postSetup();
-        dManager.postSetup();
-
         PluginManager pluginManager = new PluginManager();
         this.pluginManager = pluginManager;
-        log.info("Post setup has been completed");
+
+
+		cManager.postSetup();
+		dManager.postSetup();
+		log.info("Post setup has been completed");
     }
 	
 	/**

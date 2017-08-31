@@ -1,16 +1,12 @@
 package com.eilers.tatanpoker09.tsm.server;
 
 import com.eilers.tatanpoker09.tsm.Manager;
-import com.eilers.tatanpoker09.tsm.commandmanagement.BaseCommand;
 import com.eilers.tatanpoker09.tsm.commandmanagement.CommandManager;
-import com.eilers.tatanpoker09.tsm.commandmanagement.SubCommand;
 import net.sf.xenqtt.client.*;
 import net.sf.xenqtt.message.ConnectReturnCode;
 import net.sf.xenqtt.message.QoS;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Logger;
@@ -98,15 +94,6 @@ public class MQTTManager extends Thread implements Manager {
                 return false;
             }
             // Create your subscriptions. In this case we want to build up a catalog of classic rock.
-            List<Subscription> subscriptions = new ArrayList<>();
-            for (BaseCommand c : Tree.getServer().getcManager().getCommands()) {
-                String topic = c.getTopic();
-                subscriptions.add(new Subscription(topic, QoS.AT_LEAST_ONCE));
-                for (SubCommand sc : c.getSubCommands()) {
-                    subscriptions.add(new Subscription(topic + "/" + sc.getName(), QoS.AT_LEAST_ONCE));
-                }
-            }
-            getClient().subscribe(subscriptions);
             while (!getClient().isClosed()) {
                 Thread.sleep(3000);
             }
