@@ -84,6 +84,12 @@ public class CommandManager implements Callable, Manager {
 		return false;
 	}
 
+	public void publishCallback(Command c) {
+		if (c.hasCallback()) {
+			MQTTManager.publish(c.getTopic() + "/callback", c.getCallback());
+		}
+	}
+
 	private void run(){
 
 	}

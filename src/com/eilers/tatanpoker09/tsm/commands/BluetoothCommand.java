@@ -9,12 +9,11 @@ import com.eilers.tatanpoker09.tsm.server.Tree;
 public class BluetoothCommand extends BaseCommand {
     private static final String TOPIC = "server/peripheral/bluetooth";
     public BluetoothCommand() {
-        super(TOPIC);
+        super(TOPIC, null);
     }
 
     @Override
     public void setup() {
-
         CommandTrigger searchTrigger = new CommandTrigger() {
             @Override
             public void call(String topic, String[] info) {
@@ -23,7 +22,7 @@ public class BluetoothCommand extends BaseCommand {
                 bm.publishDevices();
             }
         };
-        SubCommand searchCmd = new SubCommand("search", searchTrigger);
+        SubCommand searchCmd = new SubCommand("search", searchTrigger, null, this);
 
         CommandTrigger retrieveTrigger = new CommandTrigger() {
             @Override
@@ -32,7 +31,7 @@ public class BluetoothCommand extends BaseCommand {
                 bm.publishDevices();
             }
         };
-        SubCommand retrieveCmd = new SubCommand("retrieve", retrieveTrigger);
+        SubCommand retrieveCmd = new SubCommand("retrieve", retrieveTrigger, null, this);
         addSubCommand(retrieveCmd);
         addSubCommand(searchCmd);
     }
@@ -40,5 +39,15 @@ public class BluetoothCommand extends BaseCommand {
     @Override
     public void defaultTrigger(String topic, String[] args) {
 
+    }
+
+    @Override
+    public boolean hasCallback() {
+        return true;
+    }
+
+    @Override
+    public String getCallback() {
+        return null;
     }
 }

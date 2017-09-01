@@ -9,12 +9,16 @@ package com.eilers.tatanpoker09.tsm.commandmanagement;
 public class SubCommand implements Command{
 	private String name;
 	private String[] args;
-	private CommandTrigger ctrigger;
-	
-	public SubCommand(String name, CommandTrigger trigger) {
-		this.name = name;
-		this.ctrigger = trigger;
-	}
+    private String callback;
+    private BaseCommand baseCommand;
+    private CommandTrigger ctrigger;
+
+    public SubCommand(String name, CommandTrigger trigger, String callback, BaseCommand baseCommand) {
+        this.name = name;
+        this.ctrigger = trigger;
+        this.callback = callback;
+        this.baseCommand = baseCommand;
+    }
 
     @Override
     public boolean onTrigger(String topic, String[] args) {
@@ -34,12 +38,22 @@ public class SubCommand implements Command{
 
     @Override
     public String getTopic() {
-		return null;
-	}
+        return baseCommand.getTopic() + "/" + this.name;
+    }
 
-	public String getName() {
-		return name;
-	}
+    @Override
+    public boolean hasCallback() {
+        return callback != null;
+    }
+
+    @Override
+    public String getCallback() {
+        return callback;
+    }
+
+    public String getName() {
+        return name;
+    }
 
 	public String[] getArgs() {
 		return args;

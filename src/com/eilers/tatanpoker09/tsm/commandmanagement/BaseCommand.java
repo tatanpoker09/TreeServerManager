@@ -22,14 +22,15 @@ public abstract class BaseCommand implements Command{
 	 */
 	private List<SubCommand> subCommands;
 	private String topic;
-	
-	/**
-	 * Constructor, creates a Command with a specified name.
+    private String callback;
+
+    /**
+     * Constructor, creates a Command with a specified name.
 	 * @param topic - The command topic.
 	 */
-	public BaseCommand(String topic) {
-		this.topic = topic;
-		this.setSubCommands(new ArrayList<SubCommand>());
+    public BaseCommand(String topic, String callback) {
+        this.topic = topic;
+        this.setSubCommands(new ArrayList<SubCommand>());
 		setup();
 	}
 	
@@ -56,10 +57,11 @@ public abstract class BaseCommand implements Command{
 	 * Function that gets triggered after a client connection calls the command.
 	 */
 	public boolean onTrigger(String topic, String[] args){
-        String subcommand = topic.replace(this.topic+"/", "");
+        String subcommandname = topic.replace(this.topic + "/", "");
         for(SubCommand subCommand : getSubCommands()) {
-            if(subCommand.getName().equals(subcommand)){
+            if (subCommand.getName().equals(subcommandname)) {
                 subCommand.onTrigger(topic, args);
+                Tree.getServer().getcManager().publishCallback(subCommand);
                 return true;
             }
         }
@@ -89,4 +91,8 @@ public abstract class BaseCommand implements Command{
 		return topic;
 	}
 
+    @Override
+    public boolean hasCallback() {
+        return getCallback() != null;
+    }
 }

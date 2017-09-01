@@ -15,6 +15,9 @@ public interface Command {
 	boolean onTrigger(String topic, String[] args);
     void defaultTrigger(String topic, String[] args);
     boolean isTopic(String topic);
-
     String getTopic();
+
+    boolean hasCallback();
+
+    String getCallback();
 }

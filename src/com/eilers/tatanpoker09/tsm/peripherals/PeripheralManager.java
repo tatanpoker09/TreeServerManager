@@ -63,4 +63,11 @@ public class PeripheralManager implements Callable,Manager{
     public String getFriendlyName(Peripheral peripheral, boolean b) {
         return btManager.getFriendlyName(peripheral.getBtDevice(), b);
     }
+
+    public boolean areEqual(Peripheral peripheral, Peripheral peripheral2) {
+        if (peripheral.getBtDevice().getBluetoothAddress().equals(peripheral2.getBtDevice().getBluetoothAddress())) {
+            return true;
+        }
+        return false;
+    }
 }
