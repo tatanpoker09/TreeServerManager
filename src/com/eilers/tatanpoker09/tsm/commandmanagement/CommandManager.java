@@ -18,28 +18,41 @@ import java.util.concurrent.Callable;
  *
  */
 public class CommandManager implements Callable, Manager {
-	private List<BaseCommand> commands;
+    /**
+     * All commands loaded are stored in here.
+     */
+    private List<BaseCommand> commands;
 
-	public CommandManager() {
-		setup();
-	}
+    /**
+     * Basic Constructor
+     */
+    public CommandManager() {
+        setup();
+    }
 
+    /**
+     * Loads all native commands.
+     */
     private void loadCommands() {
         BluetoothCommand bluetooth = new BluetoothCommand();
-		registerCommand(bluetooth);
-	}
+        registerCommand(bluetooth);
+    }
 
 
     /**
-	 * Loads all commands and stores them in the "commands" List.
-	 */
+     * Sets everything up for command loading.
+     */
 	public boolean setup() {
 		commands = new ArrayList<BaseCommand>();
 		loadCommands();
         return true;
-	}
-	
-	public void postSetup() {
+    }
+
+    /**
+     * Anything handled after the main setup needs to be loaded here.
+     * In this case we get all commands loaded from the PluginManager and set up their MQTT subscriptions
+     */
+    public void postSetup() {
 		List<Subscription> subscriptions = new ArrayList<>();
 		for (BaseCommand c : Tree.getServer().getcManager().getCommands()) {
 			String topic = c.getTopic();
@@ -70,25 +83,29 @@ public class CommandManager implements Callable, Manager {
 	 * @param payload - The actual message.
 	 * @return if the command is a disconnect query.
 	 */
-	public boolean parseAndRun(String topic, String payload){
-		System.out.println(topic+","+payload+" getting parsed");
-		for(Command c : commands){
+    public boolean parseAndRun(String topic, String payload){
+        System.out.println(topic+","+payload+" getting parsed");
+        for(Command c : commands){
             if (c.isTopic(topic)) {
                 String[] args = payload.split(",");
                 if(!c.onTrigger(topic, args)){
-		            c.defaultTrigger(topic, args);
+                    c.defaultTrigger(topic, args);
                 }
-		        break;
+                break;
             }
         }
-		return false;
-	}
+        return false;
+    }
 
-	public void publishCallback(Command c) {
-		if (c.hasCallback()) {
-			MQTTManager.publish(c.getTopic() + "/callback", c.getCallback());
-		}
-	}
+    /**
+     * Publishes the callback to <topic>/callback after the command has been called.
+     * @param c
+     */
+    public void publishCallback(Command c) {
+        if (c.getCallback() != null) {
+            MQTTManager.publish(c.getTopic() + "/callback", c.getCallback());
+        }
+    }
 
 	private void run(){
 

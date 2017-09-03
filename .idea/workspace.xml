@@ -6,17 +6,15 @@
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a9c19d6a-4436-4a9c-b35d-bfc480da2e8a" name="Default" comment="Started callback system to make sure clients know when commands run without errors">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../LightSectionModule/src/com/eilers/tatanpoker09/tsm/lsm/LightSection.java" afterPath="$PROJECT_DIR$/../LightSectionModule/src/com/eilers/tatanpoker09/tsm/lsm/LightSection.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../LightSectionModule/src/com/eilers/tatanpoker09/tsm/lsm/LightSectionModule.java" afterPath="$PROJECT_DIR$/../LightSectionModule/src/com/eilers/tatanpoker09/tsm/lsm/LightSectionModule.java" />
+    <list default="true" id="a9c19d6a-4436-4a9c-b35d-bfc480da2e8a" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../LightSectionModule/src/com/eilers/tatanpoker09/tsm/lsm/LightsCommand.java" afterPath="$PROJECT_DIR$/../LightSectionModule/src/com/eilers/tatanpoker09/tsm/lsm/LightsCommand.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/eilers/tatanpoker09/tsm/commandmanagement/BaseCommand.java" afterPath="$PROJECT_DIR$/src/com/eilers/tatanpoker09/tsm/commandmanagement/BaseCommand.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/eilers/tatanpoker09/tsm/commandmanagement/Command.java" afterPath="$PROJECT_DIR$/src/com/eilers/tatanpoker09/tsm/commandmanagement/Command.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/eilers/tatanpoker09/tsm/commandmanagement/CommandManager.java" afterPath="$PROJECT_DIR$/src/com/eilers/tatanpoker09/tsm/commandmanagement/CommandManager.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/eilers/tatanpoker09/tsm/commandmanagement/CommandTrigger.java" afterPath="$PROJECT_DIR$/src/com/eilers/tatanpoker09/tsm/commandmanagement/CommandTrigger.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/eilers/tatanpoker09/tsm/commandmanagement/SubCommand.java" afterPath="$PROJECT_DIR$/src/com/eilers/tatanpoker09/tsm/commandmanagement/SubCommand.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/eilers/tatanpoker09/tsm/commands/BluetoothCommand.java" afterPath="$PROJECT_DIR$/src/com/eilers/tatanpoker09/tsm/commands/BluetoothCommand.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/eilers/tatanpoker09/tsm/peripherals/PeripheralManager.java" afterPath="$PROJECT_DIR$/src/com/eilers/tatanpoker09/tsm/peripherals/PeripheralManager.java" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -29,46 +27,38 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="MQTTManager.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/eilers/tatanpoker09/tsm/server/MQTTManager.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="303">
-              <caret line="95" column="101" lean-forward="false" selection-start-line="95" selection-start-column="101" selection-end-line="95" selection-end-column="101" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="Command.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/eilers/tatanpoker09/tsm/commandmanagement/Command.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="340">
-              <caret line="21" column="19" lean-forward="false" selection-start-line="21" selection-start-column="19" selection-end-line="21" selection-end-column="19" />
+            <state relative-caret-position="454">
+              <caret line="39" column="82" lean-forward="false" selection-start-line="39" selection-start-column="82" selection-end-line="39" selection-end-column="82" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="BluetoothCommand.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="BluetoothCommand.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/eilers/tatanpoker09/tsm/commands/BluetoothCommand.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="102">
-              <caret line="11" column="25" lean-forward="false" selection-start-line="11" selection-start-column="25" selection-end-line="11" selection-end-column="25" />
+            <state relative-caret-position="539">
+              <caret line="40" column="27" lean-forward="false" selection-start-line="40" selection-start-column="23" selection-end-line="40" selection-end-column="27" />
               <folding>
-                <element signature="e#1596#1597#0" expanded="true" />
-                <element signature="e#1623#1624#0" expanded="true" />
-                <element signature="e#1672#1673#0" expanded="true" />
-                <element signature="e#1699#1700#0" expanded="true" />
+                <element signature="e#514#515#0" expanded="true" />
+                <element signature="e#542#543#0" expanded="true" />
+                <element signature="e#982#983#0" expanded="true" />
+                <element signature="e#1025#1026#0" expanded="true" />
+                <element signature="e#1478#1479#0" expanded="true" />
+                <element signature="e#1521#1522#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="CommandManager.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="CommandManager.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/eilers/tatanpoker09/tsm/commandmanagement/CommandManager.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="293">
-              <caret line="82" column="9" lean-forward="true" selection-start-line="82" selection-start-column="9" selection-end-line="82" selection-end-column="9" />
+            <state relative-caret-position="352">
+              <caret line="104" column="36" lean-forward="true" selection-start-line="104" selection-start-column="36" selection-end-line="104" selection-end-column="36" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -79,13 +69,11 @@
       <file leaf-file-name="SubCommand.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/eilers/tatanpoker09/tsm/commandmanagement/SubCommand.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="422">
-              <caret line="50" column="23" lean-forward="false" selection-start-line="50" selection-start-column="23" selection-end-line="50" selection-end-column="23" />
+            <state relative-caret-position="663">
+              <caret line="43" column="44" lean-forward="false" selection-start-line="43" selection-start-column="44" selection-end-line="43" selection-end-column="44" />
               <folding>
-                <element signature="e#1286#1287#0" expanded="true" />
-                <element signature="e#1325#1326#0" expanded="true" />
-                <element signature="e#1374#1375#0" expanded="true" />
-                <element signature="e#1405#1406#0" expanded="true" />
+                <element signature="e#1225#1226#0" expanded="true" />
+                <element signature="e#1276#1277#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -94,8 +82,8 @@
       <file leaf-file-name="CommandTrigger.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/eilers/tatanpoker09/tsm/commandmanagement/CommandTrigger.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="51">
-              <caret line="3" column="9" lean-forward="false" selection-start-line="3" selection-start-column="9" selection-end-line="3" selection-end-column="9" />
+            <state relative-caret-position="85">
+              <caret line="5" column="34" lean-forward="false" selection-start-line="5" selection-start-column="34" selection-end-line="5" selection-end-column="34" />
               <folding />
             </state>
           </provider>
@@ -105,7 +93,7 @@
         <entry file="file://$PROJECT_DIR$/../LightSectionModule/src/com/eilers/tatanpoker09/tsm/lsm/LightSectionModule.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="561">
-              <caret line="33" column="53" lean-forward="true" selection-start-line="33" selection-start-column="53" selection-end-line="33" selection-end-column="53" />
+              <caret line="33" column="53" lean-forward="false" selection-start-line="33" selection-start-column="53" selection-end-line="33" selection-end-column="53" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -118,13 +106,7 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="68">
               <caret line="13" column="13" lean-forward="false" selection-start-line="13" selection-start-column="13" selection-end-line="13" selection-end-column="13" />
-              <folding>
-                <element signature="imports" expanded="false" />
-                <element signature="e#1269#1270#0" expanded="false" />
-                <element signature="e#1298#1299#0" expanded="false" />
-                <element signature="e#4745#4746#0" expanded="true" />
-                <element signature="e#4776#4777#0" expanded="true" />
-              </folding>
+              <folding />
             </state>
           </provider>
         </entry>
@@ -132,11 +114,16 @@
       <file leaf-file-name="LightsCommand.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/../LightSectionModule/src/com/eilers/tatanpoker09/tsm/lsm/LightsCommand.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-124">
-              <caret line="11" column="25" lean-forward="false" selection-start-line="11" selection-start-column="25" selection-end-line="11" selection-end-column="25" />
+            <state relative-caret-position="986">
+              <caret line="58" column="41" lean-forward="true" selection-start-line="58" selection-start-column="41" selection-end-line="58" selection-end-column="41" />
               <folding>
-                <element signature="e#796#797#0" expanded="true" />
-                <element signature="e#823#824#0" expanded="true" />
+                <element signature="imports" expanded="true" />
+                <element signature="e#444#445#0" expanded="true" />
+                <element signature="e#472#473#0" expanded="true" />
+                <element signature="e#1827#1828#0" expanded="true" />
+                <element signature="e#1887#1888#0" expanded="true" />
+                <element signature="e#1968#1969#0" expanded="true" />
+                <element signature="e#2011#2012#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -145,13 +132,24 @@
       <file leaf-file-name="BaseCommand.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/eilers/tatanpoker09/tsm/commandmanagement/BaseCommand.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="422">
-              <caret line="33" column="16" lean-forward="true" selection-start-line="33" selection-start-column="16" selection-end-line="33" selection-end-column="16" />
+            <state relative-caret-position="216">
+              <caret line="77" column="42" lean-forward="true" selection-start-line="77" selection-start-column="42" selection-end-line="77" selection-end-column="42" />
               <folding>
-                <element signature="e#2654#2655#0" expanded="true" />
-                <element signature="e#2673#2674#0" expanded="true" />
-                <element signature="e#2723#2724#0" expanded="true" />
-                <element signature="e#2767#2768#0" expanded="true" />
+                <element signature="e#3598#3599#0" expanded="true" />
+                <element signature="e#3646#3647#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ServerManager.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/eilers/tatanpoker09/tsm/server/ServerManager.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="12">
+              <caret line="146" column="22" lean-forward="false" selection-start-line="146" selection-start-column="22" selection-end-line="146" selection-end-column="22" />
+              <folding>
+                <element signature="e#3926#3927#0" expanded="true" />
+                <element signature="e#3948#3949#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -205,7 +203,6 @@
         <option value="$PROJECT_DIR$/src/com/eilers/tatanpoker09/tsm/voice/VoiceCommand.java" />
         <option value="$PROJECT_DIR$/bin/com/eilers/tatanpoker09/tsm/commandmanagement/CommandManager.class" />
         <option value="$PROJECT_DIR$/src/com/eilers/tatanpoker09/tsm/client/TreeClient.java" />
-        <option value="$PROJECT_DIR$/src/com/eilers/tatanpoker09/tsm/commandmanagement/CommandTrigger.java" />
         <option value="$PROJECT_DIR$/src/com/eilers/tatanpoker09/tsm/TreePlugin.java" />
         <option value="$PROJECT_DIR$/src/com/eilers/tatanpoker09/tsm/com/eilers/tatanpoker09/tsm/database/DatabaseManager.java" />
         <option value="$PROJECT_DIR$/pom.xml" />
@@ -227,12 +224,13 @@
         <option value="$PROJECT_DIR$/src/com/eilers/tatanpoker09/tsm/peripherals/PeripheralManager.java" />
         <option value="$PROJECT_DIR$/../LightSectionModule/src/com/eilers/tatanpoker09/tsm/lsm/LightSection.java" />
         <option value="$PROJECT_DIR$/../LightSectionModule/src/com/eilers/tatanpoker09/tsm/lsm/LightSectionModule.java" />
+        <option value="$PROJECT_DIR$/src/com/eilers/tatanpoker09/tsm/commandmanagement/CommandTrigger.java" />
+        <option value="$PROJECT_DIR$/../LightSectionModule/src/com/eilers/tatanpoker09/tsm/lsm/LightsCommand.java" />
+        <option value="$PROJECT_DIR$/src/com/eilers/tatanpoker09/tsm/commandmanagement/SubCommand.java" />
+        <option value="$PROJECT_DIR$/src/com/eilers/tatanpoker09/tsm/commands/BluetoothCommand.java" />
+        <option value="$PROJECT_DIR$/src/com/eilers/tatanpoker09/tsm/commandmanagement/BaseCommand.java" />
         <option value="$PROJECT_DIR$/src/com/eilers/tatanpoker09/tsm/commandmanagement/Command.java" />
         <option value="$PROJECT_DIR$/src/com/eilers/tatanpoker09/tsm/commandmanagement/CommandManager.java" />
-        <option value="$PROJECT_DIR$/src/com/eilers/tatanpoker09/tsm/commandmanagement/SubCommand.java" />
-        <option value="$PROJECT_DIR$/src/com/eilers/tatanpoker09/tsm/commandmanagement/BaseCommand.java" />
-        <option value="$PROJECT_DIR$/../LightSectionModule/src/com/eilers/tatanpoker09/tsm/lsm/LightsCommand.java" />
-        <option value="$PROJECT_DIR$/src/com/eilers/tatanpoker09/tsm/commands/BluetoothCommand.java" />
       </list>
     </option>
   </component>
@@ -350,7 +348,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -579,7 +577,7 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scratches" />
+      <pane id="PackagesPane" />
       <pane id="Scope">
         <subPane subId="Problems">
           <PATH>
@@ -992,10 +990,17 @@
       <option name="project" value="LOCAL" />
       <updated>1504148727123</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Started callback system to make sure clients know when commands run without errors">
+      <created>1504233409109</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1504233409109</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
-  <component name="TodoView" selected-index="4">
+  <component name="TodoView">
     <todo-panel id="selected-file">
       <is-autoscroll-to-source value="true" />
     </todo-panel>
@@ -1009,12 +1014,12 @@
     <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3296146" sideWeight="0.49515608" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3296146" sideWeight="0.49300322" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Nl-Palette" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3296146" sideWeight="0.5048439" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3296146" sideWeight="0.50699675" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3275862" sideWeight="0.48546824" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.38945234" sideWeight="0.5780409" order="2" side_tool="false" content_ui="tabs" />
@@ -1119,7 +1124,7 @@
         <state relative-caret-position="648">
           <caret line="43" column="0" lean-forward="false" selection-start-line="43" selection-start-column="0" selection-end-line="43" selection-end-column="0" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="imports" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1248,17 +1253,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/eilers/tatanpoker09/tsm/peripherals/BluetoothManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="578">
-          <caret line="151" column="20" lean-forward="false" selection-start-line="151" selection-start-column="20" selection-end-line="151" selection-end-column="20" />
-          <folding>
-            <element signature="e#3968#3969#0" expanded="false" />
-            <element signature="e#4015#4016#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/eilers/tatanpoker09/tsm/server/Tree.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="507">
@@ -1298,16 +1292,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/eilers/tatanpoker09/tsm/server/ServerManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1649">
-          <caret line="111" column="9" lean-forward="false" selection-start-line="111" selection-start-column="9" selection-end-line="111" selection-end-column="9" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/eilers/tatanpoker09/tsm/peripherals/PeripheralManager.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="626">
@@ -1318,47 +1302,47 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/eilers/tatanpoker09/tsm/server/MQTTManager.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="303">
+        <state relative-caret-position="1428">
           <caret line="95" column="101" lean-forward="false" selection-start-line="95" selection-start-column="101" selection-end-line="95" selection-end-column="101" />
+          <folding>
+            <element signature="imports" expanded="false" />
+            <element signature="e#685#686#0" expanded="false" />
+            <element signature="e#714#715#0" expanded="false" />
+            <element signature="e#4617#4618#0" expanded="false" />
+            <element signature="e#4658#4659#0" expanded="false" />
+            <element signature="e#4749#4750#0" expanded="false" />
+            <element signature="e#4772#4773#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/eilers/tatanpoker09/tsm/peripherals/BluetoothManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="211">
+          <caret line="134" column="16" lean-forward="false" selection-start-line="134" selection-start-column="16" selection-end-line="134" selection-end-column="16" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/eilers/tatanpoker09/tsm/commandmanagement/CommandTrigger.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="3" column="9" lean-forward="false" selection-start-line="3" selection-start-column="9" selection-end-line="3" selection-end-column="9" />
+        <state relative-caret-position="85">
+          <caret line="5" column="34" lean-forward="false" selection-start-line="5" selection-start-column="34" selection-end-line="5" selection-end-column="34" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/eilers/tatanpoker09/tsm/commandmanagement/CommandManager.java">
+    <entry file="file://$PROJECT_DIR$/src/com/eilers/tatanpoker09/tsm/commands/BluetoothCommand.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="293">
-          <caret line="82" column="9" lean-forward="true" selection-start-line="82" selection-start-column="9" selection-end-line="82" selection-end-column="9" />
+        <state relative-caret-position="539">
+          <caret line="40" column="27" lean-forward="false" selection-start-line="40" selection-start-column="23" selection-end-line="40" selection-end-column="27" />
           <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/eilers/tatanpoker09/tsm/commandmanagement/Command.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
-          <caret line="21" column="19" lean-forward="false" selection-start-line="21" selection-start-column="19" selection-end-line="21" selection-end-column="19" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/eilers/tatanpoker09/tsm/commandmanagement/SubCommand.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="422">
-          <caret line="50" column="23" lean-forward="false" selection-start-line="50" selection-start-column="23" selection-end-line="50" selection-end-column="23" />
-          <folding>
-            <element signature="e#1286#1287#0" expanded="true" />
-            <element signature="e#1325#1326#0" expanded="true" />
-            <element signature="e#1374#1375#0" expanded="true" />
-            <element signature="e#1405#1406#0" expanded="true" />
+            <element signature="e#514#515#0" expanded="true" />
+            <element signature="e#542#543#0" expanded="true" />
+            <element signature="e#982#983#0" expanded="true" />
+            <element signature="e#1025#1026#0" expanded="true" />
+            <element signature="e#1478#1479#0" expanded="true" />
+            <element signature="e#1521#1522#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1366,7 +1350,7 @@
     <entry file="file://$PROJECT_DIR$/../LightSectionModule/src/com/eilers/tatanpoker09/tsm/lsm/LightSectionModule.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="561">
-          <caret line="33" column="53" lean-forward="true" selection-start-line="33" selection-start-column="53" selection-end-line="33" selection-end-column="53" />
+          <caret line="33" column="53" lean-forward="false" selection-start-line="33" selection-start-column="53" selection-end-line="33" selection-end-column="53" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -1377,49 +1361,73 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
           <caret line="13" column="13" lean-forward="false" selection-start-line="13" selection-start-column="13" selection-end-line="13" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../LightSectionModule/src/com/eilers/tatanpoker09/tsm/lsm/LightsCommand.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="986">
+          <caret line="58" column="41" lean-forward="true" selection-start-line="58" selection-start-column="41" selection-end-line="58" selection-end-column="41" />
           <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#1269#1270#0" expanded="false" />
-            <element signature="e#1298#1299#0" expanded="false" />
-            <element signature="e#4745#4746#0" expanded="true" />
-            <element signature="e#4776#4777#0" expanded="true" />
+            <element signature="imports" expanded="true" />
+            <element signature="e#444#445#0" expanded="true" />
+            <element signature="e#472#473#0" expanded="true" />
+            <element signature="e#1827#1828#0" expanded="true" />
+            <element signature="e#1887#1888#0" expanded="true" />
+            <element signature="e#1968#1969#0" expanded="true" />
+            <element signature="e#2011#2012#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/eilers/tatanpoker09/tsm/commandmanagement/Command.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="454">
+          <caret line="39" column="82" lean-forward="false" selection-start-line="39" selection-start-column="82" selection-end-line="39" selection-end-column="82" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/eilers/tatanpoker09/tsm/commandmanagement/SubCommand.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="663">
+          <caret line="43" column="44" lean-forward="false" selection-start-line="43" selection-start-column="44" selection-end-line="43" selection-end-column="44" />
+          <folding>
+            <element signature="e#1225#1226#0" expanded="true" />
+            <element signature="e#1276#1277#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/eilers/tatanpoker09/tsm/commandmanagement/BaseCommand.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="422">
-          <caret line="33" column="16" lean-forward="true" selection-start-line="33" selection-start-column="16" selection-end-line="33" selection-end-column="16" />
+        <state relative-caret-position="216">
+          <caret line="77" column="42" lean-forward="true" selection-start-line="77" selection-start-column="42" selection-end-line="77" selection-end-column="42" />
           <folding>
-            <element signature="e#2654#2655#0" expanded="true" />
-            <element signature="e#2673#2674#0" expanded="true" />
-            <element signature="e#2723#2724#0" expanded="true" />
-            <element signature="e#2767#2768#0" expanded="true" />
+            <element signature="e#3598#3599#0" expanded="true" />
+            <element signature="e#3646#3647#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../LightSectionModule/src/com/eilers/tatanpoker09/tsm/lsm/LightsCommand.java">
+    <entry file="file://$PROJECT_DIR$/src/com/eilers/tatanpoker09/tsm/server/ServerManager.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-124">
-          <caret line="11" column="25" lean-forward="false" selection-start-line="11" selection-start-column="25" selection-end-line="11" selection-end-column="25" />
+        <state relative-caret-position="12">
+          <caret line="146" column="22" lean-forward="false" selection-start-line="146" selection-start-column="22" selection-end-line="146" selection-end-column="22" />
           <folding>
-            <element signature="e#796#797#0" expanded="true" />
-            <element signature="e#823#824#0" expanded="true" />
+            <element signature="e#3926#3927#0" expanded="true" />
+            <element signature="e#3948#3949#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/eilers/tatanpoker09/tsm/commands/BluetoothCommand.java">
+    <entry file="file://$PROJECT_DIR$/src/com/eilers/tatanpoker09/tsm/commandmanagement/CommandManager.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="11" column="25" lean-forward="false" selection-start-line="11" selection-start-column="25" selection-end-line="11" selection-end-column="25" />
+        <state relative-caret-position="352">
+          <caret line="104" column="36" lean-forward="true" selection-start-line="104" selection-start-column="36" selection-end-line="104" selection-end-column="36" />
           <folding>
-            <element signature="e#1596#1597#0" expanded="true" />
-            <element signature="e#1623#1624#0" expanded="true" />
-            <element signature="e#1672#1673#0" expanded="true" />
-            <element signature="e#1699#1700#0" expanded="true" />
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
