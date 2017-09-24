@@ -67,7 +67,6 @@ public class Peripheral extends Thread{
                 this.os = os;
                 this.streamConnection = sc;
             } catch (IOException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }
