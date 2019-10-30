@@ -12,7 +12,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$USER_HOME$/Desktop/TreeHomeManager/xenqtt.jar!/" />
+          <root url="jar://$USER_HOME$/Desktop/Tree/TreeHomeManager/xenqtt.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -25,7 +25,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$USER_HOME$/Desktop/Tree Workshop/dependencies/yamlbeans-1.06/yamlbeans-1.06.jar!/" />
+          <root url="jar://$USER_HOME$/Desktop/Tree/TreeHomeManager/yamlbeans-1.12.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
